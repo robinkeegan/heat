@@ -25,8 +25,6 @@ def linear_eq(x,y):
     :returns: A the function y = f(x), the slope, the intercept of the line and the R2 of the line to the original data.
     '''
     slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-    def f(x, slope, intercept):
-        return x * slope + intercept
-    fit = f(x, slope, intercept)
+    fit = x * slope + intercept
     return [fit, slope, intercept, r2(x, fit)]
 
