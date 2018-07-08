@@ -1,3 +1,4 @@
+import numpy as np
 
 def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     r'''
@@ -41,3 +42,62 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     Ph = (Pw * Cw * qzw * L)/k
     t_z = To + (Tl-To)*((np.exp(Ph*z/L)-1)/(np.exp(Ph)-1))
     return(t_z)
+
+
+def stallman_cons(q, CtPt, CwPw, T, k,):
+    r'''
+
+    Args:
+
+    :param q: groundwater flux positive downwards (m/s)
+    :param CtPt: Volumetric heat capacity of the fluid and the matrix (J/m3 C)
+    :param CwPw: Volumetric heat capacity of water (J/m3 C)
+    :param T: Period of oscillation (s)
+    :param k: Thermal conductivity (W/m/C)
+    :return: A list with the stallman constants a and b as the zero'th and first elements.
+
+    This is computed using the equations:
+
+    .. math::
+        C = \frac{\pi \cdot C_tP_t}{k \cdot T}
+
+    .. math::
+        D = \frac{-q \cdot C_wP_w}{2 \cdot k}
+
+    and A and B are constants calculated from C & D via the following equations:
+
+    .. math::
+        a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D
+
+    .. math::
+        b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}
+
+    '''
+    c = (np.pi * CtPt) / (k * T)
+    d = (-q * CwPw) / (2 * k)
+    a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
+    b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
+    return [a, b]
+
+
+def stallman(dT, a, z, b, t, T):
+    r'''
+    Args:
+
+    :param dT: The amplitude of the oscillation at z=0 (C)
+    :param a: Stallman constant 'a' from function 'stallman_cons'
+    :param z: Positive depth below surface where z > 0 and z < infinity.
+    :param b: Stallman constant 'b' from function 'stallman_cons'
+    :param t: Time/s for evaluation can be a value or a numpy array (s)
+    :param T: Period of oscillation (s)
+    :return: An amplitude at depth
+
+    This is computed using the equation:
+
+    .. math::
+        T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
+
+    '''
+    amp = dT * np.exp(-a*z) * np.sin(((2* np.pi * t)/T)-b*z)
+    return amp
+

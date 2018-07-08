@@ -96,6 +96,68 @@
 \[Ph = \frac{PwCwqzwL}{k}\]</div>
 </dd></dl>
 
+<dl class="function">
+<dt id="mylib.heat_transport.stallman">
+<code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman</code><span class="sig-paren">(</span><em>dT</em>, <em>a</em>, <em>z</em>, <em>b</em>, <em>t</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dT</strong> – The amplitude of the oscillation at z=0 (C)</li>
+<li><strong>a</strong> – Stallman constant ‘a’ from function ‘stallman_cons’</li>
+<li><strong>z</strong> – Positive depth below surface where z &gt; 0 and z &lt; infinity.</li>
+<li><strong>b</strong> – Stallman constant ‘b’ from function ‘stallman_cons’</li>
+<li><strong>t</strong> – Time/s for evaluation can be a value or a numpy array (s)</li>
+<li><strong>T</strong> – Period of oscillation (s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An amplitude at depth</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.heat_transport.stallman_cons">
+<code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman_cons</code><span class="sig-paren">(</span><em>q</em>, <em>CtPt</em>, <em>CwPw</em>, <em>T</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman_cons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>CtPt</strong> – Volumetric heat capacity of the fluid and the matrix (J/m3 C)</li>
+<li><strong>CwPw</strong> – Volumetric heat capacity of water (J/m3 C)</li>
+<li><strong>T</strong> – Period of oscillation (s)</li>
+<li><strong>k</strong> – Thermal conductivity (W/m/C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list with the stallman constants a and b as the zero’th and first elements.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equations:</p>
+<div class="math notranslate nohighlight">
+\[C = \frac{\pi \cdot C_tP_t}{k \cdot T}\]</div>
+<div class="math notranslate nohighlight">
+\[D = \frac{-q \cdot C_wP_w}{2 \cdot k}\]</div>
+<p>and A and B are constants calculated from C &amp; D via the following equations:</p>
+<div class="math notranslate nohighlight">
+\[a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D\]</div>
+<div class="math notranslate nohighlight">
+\[b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}\]</div>
+</dd></dl>
+
 </div>
 <div class="section" id="module-mylib.plot">
 <span id="mylib-plot-module"></span><h2>mylib.plot module<a class="headerlink" href="#module-mylib.plot" title="Permalink to this headline">¶</a></h2>
