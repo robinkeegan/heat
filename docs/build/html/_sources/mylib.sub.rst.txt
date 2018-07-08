@@ -1,0 +1,10 @@
+mylib.sub package
+=================
+
+Module contents
+---------------
+
+.. automodule:: mylib.sub
+    :members:
+    :undoc-members:
+    :show-inheritance:

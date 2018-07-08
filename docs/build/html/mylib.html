@@ -1,0 +1,370 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mylib package &#8212; mylib 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="mylib" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="mylib"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mylib 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">mylib</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mylib-package">
+<h1>mylib package<a class="headerlink" href="#mylib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-mylib.heat_transport">
+<span id="mylib-heat-transport-module"></span><h2>mylib.heat_transport module<a class="headerlink" href="#module-mylib.heat_transport" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.heat_transport.b_p">
+<code class="descclassname">mylib.heat_transport.</code><code class="descname">b_p</code><span class="sig-paren">(</span><em>qzw</em>, <em>Pw</em>, <em>Cw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>This equation computes the BP solution for one dimensional heat transport.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> – depth (m)</li>
+<li><strong>L</strong> – maximum depth (m)</li>
+<li><strong>To</strong> – Temperature at z = 0 (C)</li>
+<li><strong>Tl</strong> – Temperature at z = L (C)</li>
+<li><strong>qzw</strong> – q in the z direction (m/s)</li>
+<li><strong>pw</strong> – density of water (1000kg/m3)</li>
+<li><strong>Cw</strong> – specific heat capacity of water (4184 joule/kg C)</li>
+<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns T(z):</th><td class="field-body"><p class="first last">The temperature at z = n  where n &gt;0 and n&lt; infinity.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li>z = depth (m)</li>
+<li>L = maximum depth (m)</li>
+<li>To = Temperature at z = 0 (C)</li>
+<li>Tl = Temperature at z = L (C)</li>
+<li>qzw = q in the z direction (m/s)</li>
+<li>pw = density of water (1000kg/m3)</li>
+<li>Cw = specific heat capacity of water (4184 joule/kg C)</li>
+<li>k = thermal conductivity (W/m/C)</li>
+</ul>
+<p>and:</p>
+<div class="math notranslate nohighlight">
+\[Ph = \frac{PwCwqzwL}{k}\]</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mylib.plot">
+<span id="mylib-plot-module"></span><h2>mylib.plot module<a class="headerlink" href="#module-mylib.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.plot.contour">
+<code class="descclassname">mylib.plot.</code><code class="descname">contour</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.plot.contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid three one dimensional numpy arrays of equal length and create a contour plot</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – A one dimensional numpy array</li>
+<li><strong>y</strong> – A one dimensional numpy array</li>
+<li><strong>z</strong> – A one dimensional numpy array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A contour plot.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.plot.plot">
+<code class="descclassname">mylib.plot.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>xlab=''</em>, <em>ylab=''</em>, <em>c='k'</em>, <em>figsize=(6</em>, <em>4)</em>, <em>marker=True</em>, <em>save=False</em>, <em>fname=None</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.plot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a x and y on a graph.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> – A list or array of values.</li>
+<li><strong>y</strong> – A list or array of values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Kwargs:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xlab</strong> – A string x label (default= ‘’)</li>
+<li><strong>ylab</strong> – A string x label (default= ‘’)</li>
+<li><strong>c</strong> – A string colour (default= ‘k’)</li>
+<li><strong>figsize</strong> – figure size in tuple x, y in size inches (default = (6,4))</li>
+<li><strong>marker</strong> – Show markers True or False (default = True)</li>
+<li><strong>save</strong> – Save the figure True or False (default = False)</li>
+<li><strong>fname</strong> – If save is True specify a filename (default = None)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Either shows a plot or saves a plot.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mylib.signal">
+<span id="mylib-signal-module"></span><h2>mylib.signal module<a class="headerlink" href="#module-mylib.signal" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.signal.filter_amp">
+<code class="descclassname">mylib.signal.</code><code class="descname">filter_amp</code><span class="sig-paren">(</span><em>array</em>, <em>period=24</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.signal.filter_amp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a zero centred sin wave and amplitudes from an amplitude modulated time-series</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>array</strong> – A sinusoidal time series in the form of a 1D numpy array</td>
+</tr>
+</tbody>
+</table>
+<p>Kwargs:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>period</strong> – The period for one oscillation (default = 24)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list containing amplitudes for each cycle and a sine wave for the entire period.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<p>Create a sine wave:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="n">T</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">d</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Use the function to extract the amplitude:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">amp</span> <span class="o">=</span> <span class="n">filter_amp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">period</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">amp</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="p">[</span><span class="mf">1.99316899</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Or output the modelled sine wave:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wave</span> <span class="o">=</span> <span class="n">filter_amp</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">period</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wave</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Modelled&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.signal.locate_minima">
+<code class="descclassname">mylib.signal.</code><code class="descname">locate_minima</code><span class="sig-paren">(</span><em>array</em>, <em>period=24</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.signal.locate_minima" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the origin of the first wave period in an time series.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>array</strong> – A sinusoidal time series in the form of a 1D numpy array</td>
+</tr>
+</tbody>
+</table>
+<p>Kwargs:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>period</strong> – The period for one ocillation (default = 24)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The index of the origin of the first oscillation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mylib.stats">
+<span id="mylib-stats-module"></span><h2>mylib.stats module<a class="headerlink" href="#module-mylib.stats" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.stats.linear_eq">
+<code class="descclassname">mylib.stats.</code><code class="descname">linear_eq</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.stats.linear_eq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the equation of a line.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – The independent variable.</li>
+<li><strong>y</strong> – The coefficient of determination.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A the function y = f(x), the slope, the intercept of the line and the R2 of the line to the original data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.stats.r2">
+<code class="descclassname">mylib.stats.</code><code class="descname">r2</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.stats.r2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an R2 value for two arrays of equal length.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – The independent variable.</li>
+<li><strong>y</strong> – The dependent variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The coefficient of determination.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mylib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mylib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mylib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-mylib.heat_transport">mylib.heat_transport module</a></li>
+<li><a class="reference internal" href="#module-mylib.plot">mylib.plot module</a></li>
+<li><a class="reference internal" href="#module-mylib.signal">mylib.signal module</a></li>
+<li><a class="reference internal" href="#module-mylib.stats">mylib.stats module</a></li>
+<li><a class="reference internal" href="#module-mylib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">mylib</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mylib.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="mylib"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mylib 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >mylib</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Robin Keegan-Treloar.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
