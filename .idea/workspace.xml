@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb675ffb-c948-4ac9-8721-edd7fc3730b2" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/mylib/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/mylib/stats.py" afterDir="false" />
-    </list>
+    <list default="true" id="cb675ffb-c948-4ac9-8721-edd7fc3730b2" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
