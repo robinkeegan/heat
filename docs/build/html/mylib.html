@@ -54,7 +54,7 @@
 <dl class="function">
 <dt id="mylib.heat_transport.b_p">
 <code class="descclassname">mylib.heat_transport.</code><code class="descname">b_p</code><span class="sig-paren">(</span><em>qzw</em>, <em>Pw</em>, <em>Cw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p" title="Permalink to this definition">¶</a></dt>
-<dd><p>This equation computes the BP solution for one dimensional heat transport.</p>
+<dd><p>BP solution for one dimensional steady state heat transport.</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -99,7 +99,8 @@
 <dl class="function">
 <dt id="mylib.heat_transport.stallman">
 <code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman</code><span class="sig-paren">(</span><em>dT</em>, <em>a</em>, <em>z</em>, <em>b</em>, <em>t</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args:</p>
+<dd><p>The Stallman heat transport equation</p>
+<p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -127,7 +128,8 @@
 <dl class="function">
 <dt id="mylib.heat_transport.stallman_cons">
 <code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman_cons</code><span class="sig-paren">(</span><em>q</em>, <em>CtPt</em>, <em>CwPw</em>, <em>T</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman_cons" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args:</p>
+<dd><p>Stallman Constants for the Stallman Heat Transport equation</p>
+<p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -162,16 +164,75 @@
 <div class="section" id="module-mylib.hydro_funcs">
 <span id="mylib-hydro-funcs-module"></span><h2>mylib.hydro_funcs module<a class="headerlink" href="#module-mylib.hydro_funcs" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mylib.hydro_funcs.pc_">
-<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">pc_</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.pc_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the bulk volumetric heat capacity of a saturated medium.</p>
+<dt id="mylib.hydro_funcs.ke_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">ke_</code><span class="sig-paren">(</span><em>Kw</em>, <em>Ks</em>, <em>ne</em>, <em>pc</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.ke_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Effective thermal conductivity</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ne</strong> – is effective porosity (unitless)</li>
+<li><strong>Kw</strong> – thermal conductivity of water (W/m C)</li>
+<li><strong>Ks</strong> – thermal conductivity of solids (W/m C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>pc</strong> – bulk volumetric heat capacity of a saturated medium (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ke the effective thermal conductivity (W/m C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.ke_full">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">ke_full</code><span class="sig-paren">(</span><em>Kw</em>, <em>Ks</em>, <em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.ke_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>The effective thermal conductivity without intermediately calculating bulk volumetric heat capacity of a saturated medium</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Kw</strong> – thermal conductivity of water (W/m C)</li>
+<li><strong>Ks</strong> – thermal conductivity of solids (W/m C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ke the effective thermal conductivity (W/m C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equations:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+<div class="math notranslate nohighlight">
+\[k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}\]</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.pc_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">pc_</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.pc_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bulk volumetric heat capacity of a saturated medium</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
 <li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
 <li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
 </ul>
@@ -188,24 +249,112 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="mylib.hydro_funcs.vs_">
-<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">vs_</code><span class="sig-paren">(</span><em>q</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.vs_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args:</p>
+<dt id="mylib.hydro_funcs.peclet">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">peclet</code><span class="sig-paren">(</span><em>PwCw</em>, <em>q</em>, <em>L</em>, <em>ke</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.peclet" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Peclet number for heat transport. Note when Peclet number &lt; 0.5 dispersivity can be neglected (Rau et al. 2012).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>q</strong> – </li>
-<li><strong>ne</strong> – </li>
+<li><strong>PwCw</strong> – </li>
+<li><strong>q</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>L</strong> – length of flow path (m)</li>
+<li><strong>ke</strong> – effective thermal conductivity (W/m C)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Ph the Peclet number for heat flow</p>
 </td>
 </tr>
 </tbody>
 </table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[Ph = \frac{P_wC_w \cdot q \cdot L}{k_e}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.vs_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">vs_</code><span class="sig-paren">(</span><em>q</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.vs_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solute Front Velocity</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – flux (m/s)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vs the solute front velocity (m/s)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[v_s = \frac{q}{n_w}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.vt_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">vt_</code><span class="sig-paren">(</span><em>PwCw</em>, <em>vs</em>, <em>ne</em>, <em>pc</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.vt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermal Front Velocity</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>vs</strong> – solute front velocity (m/s)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>pc</strong> – bulk volumetric heat capacity of a saturated medium (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vt the thermal front velocity</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[v_t = v_s \cdot \frac{P_wC_w}{pc}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.vt_full">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">vt_full</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.vt_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the thermal front velocity without intermediately calculating the solute front velocity and bulk volumetric heat capacity of the saturated medium.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+<li><strong>q</strong> – flux (m/s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vt the thermal front velocity</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equations:</p>
+<div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+<div class="math notranslate nohighlight">
+\[v_s = \frac{q}{n_w}\]</div>
+<div class="math notranslate nohighlight">
+\[v_t = v_s \cdot \frac{P_wC_w}{pc}\]</div>
 </dd></dl>
 
 </div>

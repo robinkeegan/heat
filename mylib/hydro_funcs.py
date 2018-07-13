@@ -30,7 +30,7 @@ def vs_(q, ne):
 
     This is computed with the equation:
 
-    ..math::
+    .. math::
         v_s = \frac{q}{n_w}
 
     '''
@@ -50,7 +50,7 @@ def vt_(PwCw, vs, ne, pc):
 
     This is computed with the equation:
 
-    ..math::
+    .. math::
         v_t = v_s \cdot \frac{P_wC_w}{pc}
 
     '''
@@ -75,10 +75,10 @@ def vt_full(ne, PwCw, PsCs, q):
     .. math::
         pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s
 
-    ..math::
+    .. math::
         v_s = \frac{q}{n_w}
 
-    ..math::
+    .. math::
         v_t = v_s \cdot \frac{P_wC_w}{pc}
 
     '''
@@ -100,7 +100,7 @@ def ke_(Kw, Ks, ne, pc):
 
     This is computed with the equation:
 
-    ..math::
+    .. math::
         k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}
 
     '''
@@ -125,7 +125,7 @@ def ke_full(Kw, Ks, ne, PwCw, PsCs):
      .. math::
         pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s
 
-     ..math::
+     .. math::
         k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}
 
     '''
@@ -144,7 +144,8 @@ def peclet(PwCw, q, L, ke):
 
     This is computed with the equation:
 
-    ..math::
+    .. math::
         Ph = \frac{P_wC_w \cdot q \cdot L}{k_e}
+
     '''
     return (PwCw * q * L)/ke

@@ -2,7 +2,7 @@ import numpy as np
 
 def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     r'''
-    This equation computes the BP solution for one dimensional heat transport.
+    BP solution for one dimensional steady state heat transport.
 
     Args:
 
@@ -46,6 +46,7 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
 
 def stallman_cons(q, CtPt, CwPw, T, k,):
     r'''
+    Stallman Constants for the Stallman Heat Transport equation
 
     Args:
 
@@ -82,6 +83,8 @@ def stallman_cons(q, CtPt, CwPw, T, k,):
 
 def stallman(dT, a, z, b, t, T):
     r'''
+    The Stallman heat transport equation
+
     Args:
 
     :param dT: The amplitude of the oscillation at z=0 (C)
