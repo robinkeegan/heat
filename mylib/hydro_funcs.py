@@ -1,3 +1,4 @@
+import numpy as np
 
 def pc_(ne, PwCw, PsCs):
     r'''
@@ -82,8 +83,8 @@ def vt_full(ne, PwCw, PsCs, q):
         v_t = v_s \cdot \frac{P_wC_w}{pc}
 
     '''
-    pc = ne * PwCw + (1-ne) * PsCs
-    vs = q / ne
+    pc = pc_(ne, PwCw, PsCs)
+    vs = vs_(q, ne)
     return vs * (PwCw/pc) * ne
 
 def ke_(Kw, Ks, ne, pc):
@@ -129,7 +130,7 @@ def ke_full(Kw, Ks, ne, PwCw, PsCs):
         k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}
 
     '''
-    pc = ne * PwCw + (1-ne) * PsCs
+    pc = pc_(ne, PwCw, PsCs)
     return (Kw**ne * Ks ** (1 -ne))/pc
 
 def peclet(PwCw, q, L, ke):
@@ -149,3 +150,22 @@ def peclet(PwCw, q, L, ke):
 
     '''
     return (PwCw * q * L)/ke
+
+
+def hatch_alpha(vt, ke, T):
+    r'''
+    The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.
+
+    :param vt: vt the thermal front velocity
+    :param ke: ke the effective thermal conductivity (W/m C)
+    :param T: period of oscillation (s)
+    :return: a Hatch Alpha
+
+    This is computed with the equation:
+
+    .. math::
+        a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}
+
+    '''
+    return (vt ** 4 + (8 * np.pi * (ke / T) ** 2)) * 0.5
+

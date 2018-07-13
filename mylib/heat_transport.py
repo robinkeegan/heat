@@ -2,7 +2,7 @@ import numpy as np
 
 def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     r'''
-    BP solution for one dimensional steady state heat transport.
+    Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
 
     Args:
 
@@ -46,7 +46,7 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
 
 def stallman_cons(q, CtPt, CwPw, T, k,):
     r'''
-    Stallman Constants for the Stallman Heat Transport equation
+    Stallman Constants for the Stallman (1965) Heat Transport equation
 
     Args:
 
@@ -83,7 +83,7 @@ def stallman_cons(q, CtPt, CwPw, T, k,):
 
 def stallman(dT, a, z, b, t, T):
     r'''
-    The Stallman heat transport equation
+    The Stallman (1965) heat transport equation
 
     Args:
 
@@ -104,3 +104,24 @@ def stallman(dT, a, z, b, t, T):
     amp = dT * np.exp(-a*z) * np.sin(((2* np.pi * t)/T)-b*z)
     return amp
 
+
+def briggs_extinction_depth(ke, Am, Ao, a, vt):
+    r'''
+    Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.
+
+    :param ke: effective thermal conductivity (W/m C)
+    :param Am: minimum detectable amplitude for sensor precision (C)
+    :param Ao: amplitude of the signal at surface (C)
+    :param a: Hatch alpha term (see hydro_funcs)
+    :param vt: thermal front velocity (see hydro_funcs)
+    :return: Ze the extinction depth at which amplitude oscillations will be undetectable to a sensor of finite \
+    precision
+
+    This is computed using the equation:
+
+    .. math::
+        Z_e = 2 \cdot K_e (\frac{\ln(A_{min}/A_{z=0})}{v_t - \sqrt{a + v_t^2 / 2}})
+
+    '''
+
+    return 2 * ke * (np.log(Am/Ao)) / (vt - (a + (vt**2 / 2))**0.5)
