@@ -12,6 +12,14 @@ mylib.heat\_transport module
     :undoc-members:
     :show-inheritance:
 
+mylib.hydro\_funcs module
+-------------------------
+
+.. automodule:: mylib.hydro_funcs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 mylib.plot module
 -----------------
 

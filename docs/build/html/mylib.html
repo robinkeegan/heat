@@ -159,11 +159,61 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-mylib.hydro_funcs">
+<span id="mylib-hydro-funcs-module"></span><h2>mylib.hydro_funcs module<a class="headerlink" href="#module-mylib.hydro_funcs" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.hydro_funcs.pc_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">pc_</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.pc_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the bulk volumetric heat capacity of a saturated medium.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ne</strong> – is effective porosity (unitless)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pc the bulk volumetric heat capacity of the saturated medium (J/m3C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.hydro_funcs.vs_">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">vs_</code><span class="sig-paren">(</span><em>q</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.vs_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – </li>
+<li><strong>ne</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-mylib.plot">
 <span id="mylib-plot-module"></span><h2>mylib.plot module<a class="headerlink" href="#module-mylib.plot" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="mylib.plot.contour">
-<code class="descclassname">mylib.plot.</code><code class="descname">contour</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.plot.contour" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mylib.plot.</code><code class="descname">contour</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>xlab=''</em>, <em>ylab=''</em>, <em>cblab=''</em>, <em>size=(6</em>, <em>4)</em>, <em>save=False</em>, <em>fname=None</em>, <em>cmap='OrRd'</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.plot.contour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Grid three one dimensional numpy arrays of equal length and create a contour plot</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -182,14 +232,24 @@
 </tr>
 </tbody>
 </table>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">x</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">x</span>
-<span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>Kwargs:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xlab</strong> – A string x label (default= ‘’)</li>
+<li><strong>ylab</strong> – A string x label (default= ‘’)</li>
+<li><strong>figsize</strong> – figure size in tuple x, y in size inches (default = (6,4))</li>
+<li><strong>marker</strong> – Show markers True or False (default = True)</li>
+<li><strong>save</strong> – Save the figure True or False (default = False)</li>
+<li><strong>fname</strong> – If save is True specify a filename (default = None)</li>
+<li><strong>cmap</strong> – The colour map (default = “OrRd”)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -378,6 +438,7 @@
 <li><a class="reference internal" href="#">mylib package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-mylib.heat_transport">mylib.heat_transport module</a></li>
+<li><a class="reference internal" href="#module-mylib.hydro_funcs">mylib.hydro_funcs module</a></li>
 <li><a class="reference internal" href="#module-mylib.plot">mylib.plot module</a></li>
 <li><a class="reference internal" href="#module-mylib.signal">mylib.signal module</a></li>
 <li><a class="reference internal" href="#module-mylib.stats">mylib.stats module</a></li>
