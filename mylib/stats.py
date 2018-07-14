@@ -28,3 +28,18 @@ def linear_eq(x,y):
     fit = x * slope + intercept
     return [fit, slope, intercept, r2(x, fit)]
 
+def reject_outliers(data, m = 2):
+    '''
+    Reject outliers from array.
+
+    Args:
+
+    :param data: a numpy array.
+    :param m: the number of  standard deviations from the median residual
+    :return: a array with outliers removed
+
+    '''
+    d = np.abs(data - np.median(data))
+    mdev = np.median(d)
+    s = d/mdev if mdev else 0
+    return data[s<m]
