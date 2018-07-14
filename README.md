@@ -4,11 +4,11 @@ A collection of useful functions written in the Python Programming Language. The
 
 Currently the collection includes:
 
-1. heat_transport : Heat transport equations to estimate the temperature at depth dependent on a groundwater flux value.
-2. hydro_funcs : Functions to calculate useful hydrological properties.
-3. signal : Functions for working with temperature time series.
-4. plot : High level plotting functions (not yet implemented).
-5. stats : Useful statistical functions (not yet implemented).
+1. `heat_transport` : Heat transport equations to estimate the temperature at depth dependent on a groundwater flux value.
+2. `hydro_funcs` : Functions to calculate useful hydrological properties.
+3. `signal` : Functions for working with temperature time series.
+4. `plot` : High level plotting functions (not yet implemented).
+5. `stats` : Useful statistical functions (not yet implemented).
 
 
 ## To install
