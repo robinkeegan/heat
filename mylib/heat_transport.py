@@ -35,11 +35,11 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     and:
 
     .. math::
-           Ph = \frac{PwCwqzwL}{k}
+           Ph = -\frac{PwCwqzwL}{k}
 
 
     '''
-    Ph = (Pw * Cw * qzw * L)/k
+    Ph = -(Pw * Cw * qzw * L)/k
     t_z = To + (Tl-To)*((np.exp(Ph*z/L)-1)/(np.exp(Ph)-1))
     return(t_z)
 
