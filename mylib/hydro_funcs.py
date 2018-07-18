@@ -25,7 +25,7 @@ def vs_(q, ne):
 
     Args:
 
-    :param q: flux (m/s)
+    :param q: flux (m/s, positive upward)
     :param ne: effective porosity (unit-less)
     :return: vs the solute front velocity (m/s)
 
@@ -35,7 +35,7 @@ def vs_(q, ne):
         v_s = \frac{q}{n_w}
 
     '''
-    return q / ne
+    return - q / ne
 
 def vt_(PwCw, vs, ne, pc):
     r'''
@@ -68,7 +68,7 @@ def vt_full(ne, PwCw, PsCs, q):
     :param ne: effective porosity (unit-less)
     :param PwCw: volumetric heat capacity of water (J/m3C)
     :param PsCs: volumetric heat capacity of solid (J/m3C)
-    :param q: flux (m/s)
+    :param q: flux (m/s, positive upward)
     :return: vt the thermal front velocity
 
     This is computed with the equations:
@@ -105,7 +105,7 @@ def ke_(Kw, Ks, ne, pc):
         k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}
 
     '''
-    return (Kw**ne * Ks ** (1 - ne))/pc
+    return (Kw ** ne * Ks ** (1 - ne))/pc
 
 def ke_full(Kw, Ks, ne, PwCw, PsCs):
     r'''
@@ -137,8 +137,8 @@ def peclet(PwCw, q, L, ke):
     r'''
     The Peclet number for heat transport. Note when Peclet number < 0.5 dispersivity can be neglected (Rau et al. 2012).
 
-    :param PwCw:
-    :param q: volumetric heat capacity of water (J/m3C)
+    :param PwCw: volumetric heat capacity of water (J/m3C)
+    :param q: groundwater flux (m/s, positive upward)
     :param L: length of flow path (m)
     :param ke: effective thermal conductivity (W/m C)
     :return: Ph the Peclet number for heat flow
