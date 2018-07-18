@@ -44,23 +44,27 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     return(t_z)
 
 
-def stallman_cons(q, CtPt, CwPw, T, k,):
+def stallman_cons(q, PsCs, PwCw, T, k, ne):
     r'''
     Stallman Constants for the Stallman (1965) Heat Transport equation
 
     Args:
 
     :param q: groundwater flux positive downwards (m/s)
-    :param CtPt: Volumetric heat capacity of the fluid and the matrix (J/m3 C)
-    :param CwPw: Volumetric heat capacity of water (J/m3 C)
+    :param PsCs: Volumetric heat capacity of the matrix (J/m3 C)
+    :param PwCw: Volumetric heat capacity of water (J/m3 C)
     :param T: Period of oscillation (s)
     :param k: Thermal conductivity (W/m/C)
+    :param ne: effective porosity (unit-less)
     :return: A list with the stallman constants a and b as the zero'th and first elements.
 
     This is computed using the equations:
 
     .. math::
-        C = \frac{\pi \cdot C_tP_t}{k \cdot T}
+        pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s
+
+    .. math::
+        C = \frac{\pi \cdot pc}{k \cdot T}
 
     .. math::
         D = \frac{-q \cdot C_wP_w}{2 \cdot k}
@@ -74,8 +78,9 @@ def stallman_cons(q, CtPt, CwPw, T, k,):
         b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}
 
     '''
-    c = (np.pi * CtPt) / (k * T)
-    d = (-q * CwPw) / (2 * k)
+    pc = ne * PwCw + (1-ne) * PsCs
+    c = (np.pi * pc) / (k * T)
+    d = (-q * PwCw) / (2 * k)
     a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
     b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
     return [a, b]
@@ -101,7 +106,7 @@ def stallman(dT, a, z, b, t, T):
         T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
 
     '''
-    amp = dT * np.exp(-a*z) * np.sin(((2* np.pi * t)/T)-b*z)
+    amp = dT * np.exp(-a * z) * np.sin(((2 * np.pi * t) / T) - b * z)
     return amp
 
 
