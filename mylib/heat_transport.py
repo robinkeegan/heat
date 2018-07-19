@@ -10,7 +10,7 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     :param L: maximum depth (m)
     :param To: Temperature at z = 0 (C)
     :param Tl: Temperature at z = L (C)
-    :param qzw: q in the z direction (m/s)
+    :param q: groundwater flux positive downwards (m/s)
     :param pw: density of water (1000kg/m3)
     :param Cw: specific heat capacity of water (4184 joule/kg C)
     :param k: thermal conductivity (W/m/C)
@@ -35,11 +35,11 @@ def b_p(qzw, Pw, Cw, L, k, To, Tl, z):
     and:
 
     .. math::
-           Ph = -\frac{PwCwqzwL}{k}
+           Ph = \frac{PwCwqzwL}{k}
 
 
     '''
-    Ph = -(Pw * Cw * qzw * L)/k
+    Ph = (Pw * Cw * qzw * L)/k
     t_z = To + (Tl-To)*((np.exp(Ph*z/L)-1)/(np.exp(Ph)-1))
     return(t_z)
 
@@ -80,7 +80,7 @@ def stallman_cons(q, PsCs, PwCw, T, k, ne):
     '''
     pc = ne * PwCw + (1-ne) * PsCs
     c = (np.pi * pc) / (k * T)
-    d = (-q * PwCw) / (2 * k)
+    d = (q * PwCw) / (2 * k)
     a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
     b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
     return [a, b]

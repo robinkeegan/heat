@@ -25,7 +25,7 @@ def vs_(q, ne):
 
     Args:
 
-    :param q: flux (m/s, positive upward)
+    :param q: flux (m/s, positive downward)
     :param ne: effective porosity (unit-less)
     :return: vs the solute front velocity (m/s)
 
@@ -35,7 +35,7 @@ def vs_(q, ne):
         v_s = \frac{q}{n_w}
 
     '''
-    return - q / ne
+    return q / ne
 
 def vt_(PwCw, vs, ne, pc):
     r'''
@@ -68,7 +68,7 @@ def vt_full(ne, PwCw, PsCs, q):
     :param ne: effective porosity (unit-less)
     :param PwCw: volumetric heat capacity of water (J/m3C)
     :param PsCs: volumetric heat capacity of solid (J/m3C)
-    :param q: flux (m/s, positive upward)
+    :param q: flux (m/s, positive downward)
     :return: vt the thermal front velocity
 
     This is computed with the equations:
