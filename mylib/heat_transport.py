@@ -150,9 +150,34 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
 class NumericalTransport:
 
     def equation(self, T, z, dt, q, PwCw, pc, Ke):
+        '''
+
+        :param T:
+        :param z:
+        :param dt:
+        :param q:
+        :param PwCw:
+        :param pc:
+        :param Ke:
+        :return:
+        '''
         return dt * Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / z ** 2 - dt * (q * PwCw) / pc * (T[2:] - T[0:-2]) / 2 * z + T[1:-1]
 
     def numerical_model(self, T, z, dt, q, PwCw, pc, Ke, n_iterations, top_bc, bot_bc):
+        '''
+
+        :param T:
+        :param z:
+        :param dt:
+        :param q:
+        :param PwCw:
+        :param pc:
+        :param Ke:
+        :param n_iterations:
+        :param top_bc:
+        :param bot_bc:
+        :return:
+        '''
         lis = []
         for i in range(n_iterations):
             T[0] = top_bc[i]
@@ -162,6 +187,7 @@ class NumericalTransport:
         return T, lis
 
     def objective(self):
+
         pass
 
     def optimise(self):

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb675ffb-c948-4ac9-8721-edd7fc3730b2" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mylib/heat_transport.py" beforeDir="false" afterPath="$PROJECT_DIR$/mylib/heat_transport.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +19,8 @@
       <file leaf-file-name="heat_transport.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mylib/heat_transport.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="158" column="29" lean-forward="true" selection-start-line="158" selection-start-column="29" selection-end-line="158" selection-end-column="29" />
+            <state relative-caret-position="808">
+              <caret line="189" selection-start-line="189" selection-end-line="189" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -32,8 +31,8 @@
       <file leaf-file-name="hydro_funcs.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mylib/hydro_funcs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="171" lean-forward="true" selection-start-line="171" selection-end-line="171" />
+            <state relative-caret-position="2565">
+              <caret line="171" selection-start-line="171" selection-end-line="171" />
             </state>
           </provider>
         </entry>
@@ -41,7 +40,7 @@
       <file leaf-file-name="setup.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/setup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="165">
               <caret line="12" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
@@ -53,7 +52,7 @@
       <file leaf-file-name="plot.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mylib/plot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-619">
+            <state relative-caret-position="270">
               <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
@@ -65,7 +64,7 @@
       <file leaf-file-name="stats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mylib/stats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
+            <state relative-caret-position="570">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -123,10 +122,9 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -226,17 +224,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.32948717" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.2557214" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32916668" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32916668" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32916668" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28183118" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21246007" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32916668" />
@@ -653,7 +650,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mylib/stats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
+        <state relative-caret-position="570">
           <caret line="39" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -663,7 +660,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mylib/plot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-619">
+        <state relative-caret-position="270">
           <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
@@ -673,7 +670,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="165">
           <caret line="12" selection-start-line="12" selection-end-line="12" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -683,15 +680,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mylib/hydro_funcs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="171" lean-forward="true" selection-start-line="171" selection-end-line="171" />
+        <state relative-caret-position="2565">
+          <caret line="171" selection-start-line="171" selection-end-line="171" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mylib/heat_transport.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="158" column="29" lean-forward="true" selection-start-line="158" selection-start-column="29" selection-end-line="158" selection-end-column="29" />
+        <state relative-caret-position="808">
+          <caret line="189" selection-start-line="189" selection-end-line="189" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
