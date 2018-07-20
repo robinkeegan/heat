@@ -51,55 +51,120 @@
 </div>
 <div class="section" id="module-mylib.heat_transport">
 <span id="mylib-heat-transport-module"></span><h2>mylib.heat_transport module<a class="headerlink" href="#module-mylib.heat_transport" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="mylib.heat_transport.b_p">
-<code class="descclassname">mylib.heat_transport.</code><code class="descname">b_p</code><span class="sig-paren">(</span><em>qzw</em>, <em>Pw</em>, <em>Cw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p" title="Permalink to this definition">¶</a></dt>
-<dd><p>BP solution for one dimensional steady state heat transport.</p>
+<dl class="class">
+<dt id="mylib.heat_transport.NumericalTransport">
+<em class="property">class </em><code class="descclassname">mylib.heat_transport.</code><code class="descname">NumericalTransport</code><a class="headerlink" href="#mylib.heat_transport.NumericalTransport" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mylib.heat_transport.NumericalTransport.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>T</em>, <em>z</em>, <em>dt</em>, <em>q</em>, <em>PwCw</em>, <em>pc</em>, <em>Ke</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.NumericalTransport.equation" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> – </li>
+<li><strong>z</strong> – </li>
+<li><strong>dt</strong> – </li>
+<li><strong>q</strong> – </li>
+<li><strong>PwCw</strong> – </li>
+<li><strong>pc</strong> – </li>
+<li><strong>Ke</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mylib.heat_transport.NumericalTransport.numerical_model">
+<code class="descname">numerical_model</code><span class="sig-paren">(</span><em>T</em>, <em>z</em>, <em>dt</em>, <em>q</em>, <em>PwCw</em>, <em>pc</em>, <em>Ke</em>, <em>n_iterations</em>, <em>top_bc</em>, <em>bot_bc</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.NumericalTransport.numerical_model" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> – </li>
+<li><strong>z</strong> – </li>
+<li><strong>dt</strong> – </li>
+<li><strong>q</strong> – </li>
+<li><strong>PwCw</strong> – </li>
+<li><strong>pc</strong> – </li>
+<li><strong>Ke</strong> – </li>
+<li><strong>n_iterations</strong> – </li>
+<li><strong>top_bc</strong> – </li>
+<li><strong>bot_bc</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mylib.heat_transport.NumericalTransport.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.NumericalTransport.objective" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mylib.heat_transport.NumericalTransport.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.NumericalTransport.optimise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mylib.heat_transport.Stallman">
+<em class="property">class </em><code class="descclassname">mylib.heat_transport.</code><code class="descname">Stallman</code><a class="headerlink" href="#mylib.heat_transport.Stallman" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Stallman model class has the option to calculate the Stallman constants or run the Stallman equation.</p>
+<dl class="method">
+<dt id="mylib.heat_transport.Stallman.constants">
+<code class="descname">constants</code><span class="sig-paren">(</span><em>PsCs</em>, <em>PwCw</em>, <em>T</em>, <em>k</em>, <em>ne</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.Stallman.constants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stallman Constants for the Stallman (1965) Heat Transport equation</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>z</strong> – depth (m)</li>
-<li><strong>L</strong> – maximum depth (m)</li>
-<li><strong>To</strong> – Temperature at z = 0 (C)</li>
-<li><strong>Tl</strong> – Temperature at z = L (C)</li>
-<li><strong>qzw</strong> – q in the z direction (m/s)</li>
-<li><strong>pw</strong> – density of water (1000kg/m3)</li>
-<li><strong>Cw</strong> – specific heat capacity of water (4184 joule/kg C)</li>
-<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>PsCs</strong> – Volumetric heat capacity of the matrix (J/m3 C)</li>
+<li><strong>PwCw</strong> – Volumetric heat capacity of water (J/m3 C)</li>
+<li><strong>T</strong> – Period of oscillation (s)</li>
+<li><strong>k</strong> – Thermal conductivity (W/m/C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns T(z):</th><td class="field-body"><p class="first last">The temperature at z = n  where n &gt;0 and n&lt; infinity.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list with the stallman constants a and b as the zero’th and first elements.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>This is computed using the equation:</p>
+<p>This is computed using the equations:</p>
 <div class="math notranslate nohighlight">
-\[T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li>z = depth (m)</li>
-<li>L = maximum depth (m)</li>
-<li>To = Temperature at z = 0 (C)</li>
-<li>Tl = Temperature at z = L (C)</li>
-<li>qzw = q in the z direction (m/s)</li>
-<li>pw = density of water (1000kg/m3)</li>
-<li>Cw = specific heat capacity of water (4184 joule/kg C)</li>
-<li>k = thermal conductivity (W/m/C)</li>
-</ul>
-<p>and:</p>
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
 <div class="math notranslate nohighlight">
-\[Ph = \frac{PwCwqzwL}{k}\]</div>
+\[C = \frac{\pi \cdot pc}{k \cdot T}\]</div>
+<div class="math notranslate nohighlight">
+\[D = \frac{-q \cdot C_wP_w}{2 \cdot k}\]</div>
+<p>and A and B are constants calculated from C &amp; D via the following equations:</p>
+<div class="math notranslate nohighlight">
+\[a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D\]</div>
+<div class="math notranslate nohighlight">
+\[b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}\]</div>
 </dd></dl>
 
-<dl class="function">
-<dt id="mylib.heat_transport.stallman">
-<code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman</code><span class="sig-paren">(</span><em>dT</em>, <em>a</em>, <em>z</em>, <em>b</em>, <em>t</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Stallman heat transport equation</p>
+<dl class="method">
+<dt id="mylib.heat_transport.Stallman.stallman">
+<code class="descname">stallman</code><span class="sig-paren">(</span><em>a</em>, <em>z</em>, <em>b</em>, <em>t</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.Stallman.stallman" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Stallman (1965) heat transport equation</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -125,44 +190,165 @@
 \[T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)\]</div>
 </dd></dl>
 
-<dl class="function">
-<dt id="mylib.heat_transport.stallman_cons">
-<code class="descclassname">mylib.heat_transport.</code><code class="descname">stallman_cons</code><span class="sig-paren">(</span><em>q</em>, <em>CtPt</em>, <em>CwPw</em>, <em>T</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.stallman_cons" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stallman Constants for the Stallman Heat Transport equation</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mylib.heat_transport.b_p">
+<em class="property">class </em><code class="descclassname">mylib.heat_transport.</code><code class="descname">b_p</code><a class="headerlink" href="#mylib.heat_transport.b_p" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="mylib.heat_transport.b_p.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>q</em>, <em>PwCw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p.equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> – depth (m)</li>
+<li><strong>L</strong> – maximum depth (m)</li>
+<li><strong>To</strong> – temperature at z = 0 (C)</li>
+<li><strong>Tl</strong> – temperature at z = L (C)</li>
 <li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
-<li><strong>CtPt</strong> – Volumetric heat capacity of the fluid and the matrix (J/m3 C)</li>
-<li><strong>CwPw</strong> – Volumetric heat capacity of water (J/m3 C)</li>
-<li><strong>T</strong> – Period of oscillation (s)</li>
-<li><strong>k</strong> – Thermal conductivity (W/m/C)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list with the stallman constants a and b as the zero’th and first elements.</p>
+<tr class="field-even field"><th class="field-name">Returns T(z):</th><td class="field-body"><p class="first last">The temperature at z.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>This is computed using the equations:</p>
+<p>This is computed using the equation:</p>
 <div class="math notranslate nohighlight">
-\[C = \frac{\pi \cdot C_tP_t}{k \cdot T}\]</div>
+\[T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li>z = depth (m)</li>
+<li>L = maximum depth (m)</li>
+<li>To = temperature at z = 0 (C)</li>
+<li>Tl = temperature at z = L (C)</li>
+<li>q = q in the z direction (m/s)</li>
+<li>PwCw = volumetric heat capacity of water (J/m3C)</li>
+<li>k = thermal conductivity (W/m/C)</li>
+</ul>
+<p>and:</p>
 <div class="math notranslate nohighlight">
-\[D = \frac{-q \cdot C_wP_w}{2 \cdot k}\]</div>
-<p>and A and B are constants calculated from C &amp; D via the following equations:</p>
+\[Ph = \frac{PwCwqzwL}{k}\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="mylib.heat_transport.b_p.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>PwCw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>An objective function which calculates the absolute error between a modelled and observed profile for a flux
+estimate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>L</strong> – maximum depth (m)</li>
+<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
+<li><strong>To</strong> – temperature at z = 0 (C)</li>
+<li><strong>Tl</strong> – temperature at z = L (C)</li>
+<li><strong>z</strong> – depth (m)</li>
+<li><strong>T</strong> – temperature at z (C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">absolute error between modelled T(z) and observed T at z.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mylib.heat_transport.b_p.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><em>PwCw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.b_p.optimise" title="Permalink to this definition">¶</a></dt>
+<dd><p>When q is unknown this function will estimate optimal q value for a given profile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>L</strong> – maximum depth (m)</li>
+<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
+<li><strong>To</strong> – temperature at z = 0 (C)</li>
+<li><strong>Tl</strong> – temperature at z = L (C)</li>
+<li><strong>z</strong> – depth (m)</li>
+<li><strong>T</strong> – temperature at z (C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an estimate of q</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.heat_transport.briggs_extinction_depth">
+<code class="descclassname">mylib.heat_transport.</code><code class="descname">briggs_extinction_depth</code><span class="sig-paren">(</span><em>ke</em>, <em>Am</em>, <em>Ao</em>, <em>a</em>, <em>vt</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.heat_transport.briggs_extinction_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ke</strong> – effective thermal conductivity (W/m C)</li>
+<li><strong>Am</strong> – minimum detectable amplitude for sensor precision (C)</li>
+<li><strong>Ao</strong> – amplitude of the signal at surface (C)</li>
+<li><strong>a</strong> – Hatch alpha term (see hydro_funcs)</li>
+<li><strong>vt</strong> – thermal front velocity (see hydro_funcs)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Ze the extinction depth at which amplitude oscillations will be undetectable to a sensor of finite precision</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
 <div class="math notranslate nohighlight">
-\[a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D\]</div>
-<div class="math notranslate nohighlight">
-\[b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}\]</div>
+\[Z_e = 2 \cdot K_e (\frac{\ln(A_{min}/A_{z=0})}{v_t - \sqrt{a + v_t^2 / 2}})\]</div>
 </dd></dl>
 
 </div>
 <div class="section" id="module-mylib.hydro_funcs">
 <span id="mylib-hydro-funcs-module"></span><h2>mylib.hydro_funcs module<a class="headerlink" href="#module-mylib.hydro_funcs" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mylib.hydro_funcs.hatch_alpha">
+<code class="descclassname">mylib.hydro_funcs.</code><code class="descname">hatch_alpha</code><span class="sig-paren">(</span><em>vt</em>, <em>ke</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.hatch_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vt</strong> – vt the thermal front velocity</li>
+<li><strong>ke</strong> – ke the effective thermal conductivity (W/m C)</li>
+<li><strong>T</strong> – period of oscillation (s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a Hatch Alpha</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}\]</div>
+</dd></dl>
+
 <dl class="function">
 <dt id="mylib.hydro_funcs.ke_">
 <code class="descclassname">mylib.hydro_funcs.</code><code class="descname">ke_</code><span class="sig-paren">(</span><em>Kw</em>, <em>Ks</em>, <em>ne</em>, <em>pc</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.hydro_funcs.ke_" title="Permalink to this definition">¶</a></dt>
@@ -257,8 +443,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>PwCw</strong> – </li>
-<li><strong>q</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>q</strong> – groundwater flux (m/s, positive upward)</li>
 <li><strong>L</strong> – length of flow path (m)</li>
 <li><strong>ke</strong> – effective thermal conductivity (W/m C)</li>
 </ul>
@@ -284,7 +470,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>q</strong> – flux (m/s)</li>
+<li><strong>q</strong> – flux (m/s, positive downward)</li>
 <li><strong>ne</strong> – effective porosity (unit-less)</li>
 </ul>
 </td>
@@ -339,7 +525,7 @@
 <li><strong>ne</strong> – effective porosity (unit-less)</li>
 <li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
 <li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
-<li><strong>q</strong> – flux (m/s)</li>
+<li><strong>q</strong> – flux (m/s, positive downward)</li>
 </ul>
 </td>
 </tr>
@@ -564,6 +750,28 @@
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The coefficient of determination.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mylib.stats.reject_outliers">
+<code class="descclassname">mylib.stats.</code><code class="descname">reject_outliers</code><span class="sig-paren">(</span><em>data</em>, <em>m=2</em><span class="sig-paren">)</span><a class="headerlink" href="#mylib.stats.reject_outliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reject outliers from array.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – a numpy array.</li>
+<li><strong>m</strong> – the number of  standard deviations from the median residual</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a array with outliers removed</p>
 </td>
 </tr>
 </tbody>

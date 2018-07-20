@@ -65,6 +65,7 @@ class b_p:
     def optimise(self, PwCw, L, k, To, Tl, z, T):
         '''
         When q is unknown this function will estimate optimal q value for a given profile.
+
         :param PwCw: volumetric heat capacity of water (J/m3C)
         :param L: maximum depth (m)
         :param k: thermal conductivity (W/m/C)
@@ -157,8 +158,7 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
     :param Ao: amplitude of the signal at surface (C)
     :param a: Hatch alpha term (see hydro_funcs)
     :param vt: thermal front velocity (see hydro_funcs)
-    :return: Ze the extinction depth at which amplitude oscillations will be undetectable to a sensor of finite \
-    precision
+    :return: Ze the extinction depth at which amplitude oscillations will be undetectable to a sensor of finite precision
 
     This is computed using the equation:
 
