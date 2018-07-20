@@ -51,7 +51,7 @@ class b_p:
         return (np.abs(forcast - T)).sum()
 
     def optimise(self, Pw, Cw, L, k, To, Tl, z, T):
-        result = optimize.minimize(self.objective, (0),(Pw, Cw, L, k, To, Tl, z, T),
+        result = optimize.minimize(self.objective, (0.000001),(Pw, Cw, L, k, To, Tl, z, T),
                                tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
         return result
 
