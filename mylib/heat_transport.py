@@ -3,7 +3,7 @@ from scipy import optimize
 
 
 class b_p:
-    def equation(self, qzw, Pw, Cw, L, k, To, Tl, z):
+    def equation(self, q, PwCw, L, k, To, Tl, z):
         r'''
         Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
 
@@ -11,13 +11,12 @@ class b_p:
 
         :param z: depth (m)
         :param L: maximum depth (m)
-        :param To: Temperature at z = 0 (C)
-        :param Tl: Temperature at z = L (C)
+        :param To: temperature at z = 0 (C)
+        :param Tl: temperature at z = L (C)
         :param q: groundwater flux positive downwards (m/s)
-        :param pw: density of water (1000kg/m3)
-        :param Cw: specific heat capacity of water (4184 joule/kg C)
+        :param PwCw: volumetric heat capacity of water (J/m3C)
         :param k: thermal conductivity (W/m/C)
-        :returns T(z): The temperature at z = n  where n >0 and n< infinity.
+        :returns T(z): The temperature at z.
 
         This is computed using the equation:
 
@@ -28,11 +27,10 @@ class b_p:
 
         - z = depth (m)
         - L = maximum depth (m)
-        - To = Temperature at z = 0 (C)
-        - Tl = Temperature at z = L (C)
-        - qzw = q in the z direction (m/s)
-        - pw = density of water (1000kg/m3)
-        - Cw = specific heat capacity of water (4184 joule/kg C)
+        - To = temperature at z = 0 (C)
+        - Tl = temperature at z = L (C)
+        - q = q in the z direction (m/s)
+        - PwCw = volumetric heat capacity of water (J/m3C)
         - k = thermal conductivity (W/m/C)
 
         and:
@@ -42,18 +40,43 @@ class b_p:
 
 
         '''
-        Ph = (Pw * Cw * qzw * L)/k
+        Ph = (PwCw * q * L)/k
         t_z = To + (Tl-To)*((np.exp(Ph*z/L)-1)/(np.exp(Ph)-1))
         return(t_z)
 
-    def objective(self, qzw, Pw, Cw, L, k, To, Tl, z, T):
-        forcast = self.equation(qzw, Pw, Cw, L, k, To, Tl, z)
+    def objective(self, q, PwCw, L, k, To, Tl, z, T):
+        '''
+        An objective function which calculates the absolute error between a modelled and observed profile for a flux
+        estimate.
+
+        :param q: groundwater flux positive downwards (m/s)
+        :param PwCw: volumetric heat capacity of water (J/m3C)
+        :param L: maximum depth (m)
+        :param k: thermal conductivity (W/m/C)
+        :param To: temperature at z = 0 (C)
+        :param Tl: temperature at z = L (C)
+        :param z: depth (m)
+        :param T: temperature at z (C)
+        :return: absolute error between modelled T(z) and observed T at z.
+        '''
+        forcast = self.equation(q, PwCw, L, k, To, Tl, z)
         return (np.abs(forcast - T)).sum()
 
-    def optimise(self, Pw, Cw, L, k, To, Tl, z, T):
+    def optimise(self, PwCw, L, k, To, Tl, z, T):
+        '''
+        When q is unknown this function will estimate optimal q value for a given profile.
+        :param PwCw: volumetric heat capacity of water (J/m3C)
+        :param L: maximum depth (m)
+        :param k: thermal conductivity (W/m/C)
+        :param To: temperature at z = 0 (C)
+        :param Tl: temperature at z = L (C)
+        :param z: depth (m)
+        :param T: temperature at z (C)
+        :return: an estimate of q
+        '''
         result = optimize.minimize(self.objective, (0.000001),(Pw, Cw, L, k, To, Tl, z, T),
                                tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
-        return result
+        return result.x[0]
 
 
 class Stallman:
@@ -187,8 +210,8 @@ class NumericalTransport:
         return T, lis
 
     def objective(self):
-
         pass
 
     def optimise(self):
         pass
+
