@@ -2,8 +2,8 @@ import numpy as np
 from scipy import optimize
 
 
-class b_p:
-    def __init__(self, q, PwCw, L, k, To, Tl, z):
+class BP:
+    def __init__(self, PwCw, L, k, To, Tl, z):
         '''
 
         Args:
@@ -17,7 +17,6 @@ class b_p:
         :param k: thermal conductivity (W/m/C)
 
         '''
-        self.q = q
         self.PwCw = PwCw
         self.L = L
         self.k = k
@@ -25,7 +24,7 @@ class b_p:
         self.Tl = Tl
         self.z = z
 
-    def equation(self):
+    def equation(self, q):
         r'''
         Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
 
@@ -51,11 +50,11 @@ class b_p:
 
 
         '''
-        Ph = (self.PwCw * self.q * self.L) / self.k
+        Ph = (self.PwCw * q * self.L) / self.k
         t_z = self.To + (self.Tl - self.To)*((np.exp(Ph * self.z / self.L) - 1)/(np.exp(Ph)-1))
         return t_z
 
-    def objective(self, T):
+    def objective(self, q, T):
         '''
         An objective function which calculates the absolute error between a modelled and observed profile for a flux
         estimate.
@@ -63,7 +62,7 @@ class b_p:
         :param T: temperature at z (C)
         :return: absolute error between modelled T(z) and observed T at z.
         '''
-        return (np.abs(self.equation(self) - T)).sum()
+        return (np.abs(self.equation(q) - T)).sum()
 
     def optimise(self, T):
         '''
@@ -72,10 +71,9 @@ class b_p:
         :param T: temperature at z (C)
         :return: an estimate of q
         '''
-        result = optimize.minimize(self.objective, (0.000001),(self.Pw, self.Cw, self.L, self.k, self.To, self.Tl, self.z, T),
+        result = optimize.minimize(self.objective, (0.00001),(T),
                                    tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
-        return result.x[0]
-
+        return result
 
 class Stallman:
     '''The Stallman model class has the option to calculate the Stallman constants or run the Stallman equation.
