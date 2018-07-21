@@ -279,7 +279,7 @@ class NumericalTransport:
 
 class HatchAmplitude:
 
-    def __init__(self, pc, PwCw, Ke, z, Ar, ne, tau):
+    def __init__(self, pc, PwCw, Ke, dz, Ar, ne, tau):
         '''
         The Hatch amplitude ratio method.
 
@@ -296,7 +296,7 @@ class HatchAmplitude:
         self.pc = pc
         self.PwCw = PwCw
         self.Ke = Ke
-        self.z = z
+        self.dz = dz
         self.Ar = Ar
         self.ne = ne
         self.tau = tau
@@ -313,10 +313,11 @@ class HatchAmplitude:
         vs = vs_(q, self.ne)
         vt = vt_(self.PwCw, vs, self.ne, self.pc)
         a = hatch_alpha(vt, self.Ke, self.tau)
-        return (self.pc / self.PwCw) * (((2* self.Ke) / self.z) * np.log(self.Ar) + ((a + vt ** 2) / 2) ** 0.5)
+        return np.exp((self.dz / (2 * self.Ke)) * (vt - np.sqrt((a + vt ** 2) / 2)))
 
     def objective(self, q, Ak):
         '''
+        Objective function to find the absolute error between calculated and observed amplitudes.
 
         :param q: groundwater flux positive downwards (m/s)
         :param Ak: observed amplitude ratio
@@ -326,9 +327,12 @@ class HatchAmplitude:
 
     def optimise(self, Ak):
         '''
+        Optimisation function to return the q value which minimises the difference between the observed and calculated \
+        amplitudes.
         :param Ak: observed amplitude ratio
         :return: The optimal q value
         '''
         result = optimize.minimize(self.objective, (0.00001),(Ak), tol=1e-50, method="Nelder-Mead",
                                    options= {'maxiter': 1000})
         return result
+
