@@ -1,5 +1,4 @@
 from setuptools import setup
-from Cython.Build import cythonize
 import setuptools
 setup(name='mylib',
       version='0.1',
@@ -9,6 +8,5 @@ setup(name='mylib',
       url='https://github.com/robinkeegan/mylib',
       license='MIT',
       packages=setuptools.find_packages(),
-      zip_safe=False,
-      ext_modules = cythonize("cython/numerical_heat_transport.pyx"))
+      zip_safe=False)
 

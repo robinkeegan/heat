@@ -3,9 +3,8 @@ from scipy import optimize
 
 
 class b_p:
-    def equation(self, q, PwCw, L, k, To, Tl, z):
-        r'''
-        Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
+    def __init__(self, q, PwCw, L, k, To, Tl, z):
+        '''
 
         Args:
 
@@ -16,7 +15,19 @@ class b_p:
         :param q: groundwater flux positive downwards (m/s)
         :param PwCw: volumetric heat capacity of water (J/m3C)
         :param k: thermal conductivity (W/m/C)
-        :returns T(z): The temperature at z.
+
+        '''
+        self.q = q
+        self.PwCw = PwCw
+        self.L = L
+        self.k = k
+        self.To = To
+        self.Tl = Tl
+        self.z = z
+
+    def equation(self):
+        r'''
+        Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
 
         This is computed using the equation:
 
@@ -40,43 +51,29 @@ class b_p:
 
 
         '''
-        Ph = (PwCw * q * L)/k
-        t_z = To + (Tl-To)*((np.exp(Ph*z/L)-1)/(np.exp(Ph)-1))
-        return(t_z)
+        Ph = (self.PwCw * self.q * self.L) / self.k
+        t_z = self.To + (self.Tl - self.To)*((np.exp(Ph * self.z / self.L) - 1)/(np.exp(Ph)-1))
+        return t_z
 
-    def objective(self, q, PwCw, L, k, To, Tl, z, T):
+    def objective(self, T):
         '''
         An objective function which calculates the absolute error between a modelled and observed profile for a flux
         estimate.
 
-        :param q: groundwater flux positive downwards (m/s)
-        :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param L: maximum depth (m)
-        :param k: thermal conductivity (W/m/C)
-        :param To: temperature at z = 0 (C)
-        :param Tl: temperature at z = L (C)
-        :param z: depth (m)
         :param T: temperature at z (C)
         :return: absolute error between modelled T(z) and observed T at z.
         '''
-        forcast = self.equation(q, PwCw, L, k, To, Tl, z)
-        return (np.abs(forcast - T)).sum()
+        return (np.abs(self.equation(self) - T)).sum()
 
-    def optimise(self, PwCw, L, k, To, Tl, z, T):
+    def optimise(self, T):
         '''
         When q is unknown this function will estimate optimal q value for a given profile.
 
-        :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param L: maximum depth (m)
-        :param k: thermal conductivity (W/m/C)
-        :param To: temperature at z = 0 (C)
-        :param Tl: temperature at z = L (C)
-        :param z: depth (m)
         :param T: temperature at z (C)
         :return: an estimate of q
         '''
-        result = optimize.minimize(self.objective, (0.000001),(Pw, Cw, L, k, To, Tl, z, T),
-                               tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
+        result = optimize.minimize(self.objective, (0.000001),(self.Pw, self.Cw, self.L, self.k, self.To, self.Tl, self.z, T),
+                                   tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
         return result.x[0]
 
 
@@ -172,8 +169,9 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
 
 class NumericalTransport:
 
-    def equation(self, T, z, dt, q, PwCw, pc, Ke):
+    def __int__(self, T, z, dt, q, PwCw, pc, Ke):
         '''
+        Args:
 
         :param T:
         :param z:
@@ -184,18 +182,30 @@ class NumericalTransport:
         :param Ke:
         :return:
         '''
-        return dt * Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / z ** 2 - dt * (q * PwCw) / pc * (T[2:] - T[0:-2]) / 2 * z + T[1:-1]
+        self.T = T
+        self.z = z
+        self.dt = dt
+        self.q = q
+        self.PwCw = PwCw
+        self.pc = pc
+        self.Ke = Ke
 
-    def numerical_model(self, T, z, dt, q, PwCw, pc, Ke, n_iterations, top_bc, bot_bc):
+
+    def equation(self):
         '''
 
-        :param T:
-        :param z:
-        :param dt:
-        :param q:
-        :param PwCw:
-        :param pc:
-        :param Ke:
+        '''
+        return self.dt * self.Ke * (self.T[2:] - 2 * self.T[1:-1] + self.T[0:-2]) / self.z ** 2 - self.dt * \
+            (self.q * self.PwCw) / self.pc * (self.T[2:] - self.T[0:-2]) / 2 * self.z + self.T[1:-1]
+
+    def max_timestep(self):
+        return self.z ** 2 / (2 * self.Ke)
+
+    def max_gridspace(self):
+        return (2 * self.Ke) / ((self.q * self.PwCw) / self.pc)
+
+    def model(self, n_iterations, top_bc, bot_bc):
+        '''
         :param n_iterations:
         :param top_bc:
         :param bot_bc:
@@ -203,15 +213,9 @@ class NumericalTransport:
         '''
         lis = []
         for i in range(n_iterations):
-            T[0] = top_bc[i]
-            T[-1] = bot_bc[i]
-            T[1:-1] = self.equation(T, z, dt, q, PwCw, pc, Ke)
-            lis.append(T)
-        return T, lis
-
-    def objective(self):
-        pass
-
-    def optimise(self):
-        pass
+            self.T[0] = top_bc[i]
+            self.T[-1] = bot_bc[i]
+            self.T[1:-1] = self.equation(self)
+            lis.append(self.T)
+        return self.T, lis
 
