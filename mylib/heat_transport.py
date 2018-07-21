@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import optimize
+from mylib.signal import filter_amp
 
 
 class BP:
@@ -77,21 +78,37 @@ class BP:
         return result
 
 class Stallman:
-    '''The Stallman model class
+    '''
+    The Stallman model class
+
+    Args:
+
+    :param PwCw: Volumetric heat capacity of water (J/m3 C)
+    :param tau: Period of oscillation (s)
+    :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
+    :param ne: effective porosity (unit-less)
+    :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
+    :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
+    :param z: Positive depth below surface where z > 0 and z < infinity.
+    :param t: Time/s for evaluation can be a value or a numpy array (s)
+    :return: an instance of the Stallman class
+
     '''
 
-    def constants(q, PsCs, PwCw, T, k, ne):
+    def __init__(self, PwCw, tau, Ke, ne, pc, dT, z, t):
+        self.PwCw = PwCw
+        self.tau = tau
+        self.k = Ke
+        self.ne = ne
+        self.pc = pc
+        self.dT = dT
+        self.z = z
+        self.t = t
+
+    def constants(self, q):
         r'''
         Stallman Constants for the Stallman (1965) Heat Transport equation
 
-        Args:
-
-        :param q: groundwater flux positive downwards (m/s)
-        :param PsCs: Volumetric heat capacity of the matrix (J/m3 C)
-        :param PwCw: Volumetric heat capacity of water (J/m3 C)
-        :param T: Period of oscillation (s)
-        :param k: Thermal conductivity (W/m/C)
-        :param ne: effective porosity (unit-less)
         :return: a list with the stallman constants a and b as the zeroth and first elements.
 
         This is computed using the equations:
@@ -114,26 +131,18 @@ class Stallman:
             b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}
 
         '''
-        pc = ne * PwCw + (1 - ne) * PsCs
-        c = (np.pi * pc) / (k * T)
-        d = (q * PwCw) / (2 * k)
-        a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
-        b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
-        return [a, b]
+        c = (np.pi * self.pc) / (self.k * self.tau)
+        d = (q * self.PwCw) / (2 * self.k)
+        self.a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
+        self.b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
+        return self.a, self.b
 
-    def stallman(dT, a, z, b, t, T):
+    def equation(self):
         r'''
         The Stallman (1965) heat transport equation
 
-        Args:
 
-        :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
-        :param a: Stallman constant 'a' from function 'stallman_cons'
-        :param z: Positive depth below surface where z > 0 and z < infinity.
-        :param b: Stallman constant 'b' from function 'stallman_cons'
-        :param t: Time/s for evaluation can be a value or a numpy array (s)
-        :param T: Period of oscillation (s)
-        :return: An amplitude at depth
+        :return: An amplitude at z
 
         This is computed using the equation:
 
@@ -141,8 +150,28 @@ class Stallman:
             T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
 
         '''
-        amp = dT * np.exp(-a * z) * np.sin(((2 * np.pi * t) / T) - b * z)
-        return amp
+        return self.dT * np.exp(-self.a * self.z) * np.sin(((2 * np.pi * self.t) / self.tau) - self.b * self.z)
+
+    def objective(self, q, dTz):
+        '''
+
+        :param q: groundwater flux positive downwards (m/s)
+        :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
+        :return:
+        '''
+        constants = self.constants(q)
+        evaluation = self.equation()
+        ae = np.abs(dTz - filter_amp(evaluation)[0])
+        return ae
+
+    def optimise(self, dTz):
+        '''
+        :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
+        :return: An estimate of the optimal flux
+        '''
+        result = optimize.minimize(self.objective, (0.00001),(dTz),tol=1e-50, method="Nelder-Mead",
+                                   options= {'maxiter': 1000})
+        return result
 
 
 def briggs_extinction_depth(ke, Am, Ao, a, vt):
