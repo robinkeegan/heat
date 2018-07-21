@@ -5,6 +5,7 @@ from scipy import optimize
 class BP:
     def __init__(self, PwCw, L, k, To, Tl, z):
         '''
+        Initiates the Bredehoeft and Papaopulos (1965) solution model class
 
         Args:
 
@@ -56,7 +57,7 @@ class BP:
 
     def objective(self, q, T):
         '''
-        An objective function which calculates the absolute error between a modelled and observed profile for a flux
+        An objective function which calculates the absolute error between a modelled and observed profile for a flux \
         estimate.
 
         :param T: temperature at z (C)
@@ -76,7 +77,7 @@ class BP:
         return result
 
 class Stallman:
-    '''The Stallman model class has the option to calculate the Stallman constants or run the Stallman equation.
+    '''The Stallman model class
     '''
 
     def constants(q, PsCs, PwCw, T, k, ne):
@@ -91,7 +92,7 @@ class Stallman:
         :param T: Period of oscillation (s)
         :param k: Thermal conductivity (W/m/C)
         :param ne: effective porosity (unit-less)
-        :return: A list with the stallman constants a and b as the zero'th and first elements.
+        :return: a list with the stallman constants a and b as the zeroth and first elements.
 
         This is computed using the equations:
 
@@ -126,7 +127,7 @@ class Stallman:
 
         Args:
 
-        :param dT: The amplitude of the oscillation at z=0 (C)
+        :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
         :param a: Stallman constant 'a' from function 'stallman_cons'
         :param z: Positive depth below surface where z > 0 and z < infinity.
         :param b: Stallman constant 'b' from function 'stallman_cons'
@@ -167,18 +168,18 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
 
 class NumericalTransport:
 
-    def __int__(self, T, z, dt, q, PwCw, pc, Ke):
+    def __init__(self, T, z, dt, q, PwCw, pc, Ke):
         '''
         Args:
 
-        :param T:
-        :param z:
-        :param dt:
-        :param q:
-        :param PwCw:
-        :param pc:
-        :param Ke:
-        :return:
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
+        :param z: The spacing between each temperature in the array (m).
+        :param dt: The time step (s) for help choosing a stable time step see method .max_timestep
+        :param q: groundwater flux positive downwards (m/s)
+        :param PwCw: volumetric heat capacity of water (J/m3 C)
+        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
+        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
+        :return: An instance of the NumericalTransport class.
         '''
         self.T = T
         self.z = z
@@ -188,32 +189,62 @@ class NumericalTransport:
         self.pc = pc
         self.Ke = Ke
 
-
     def equation(self):
         '''
 
+        A finite difference implementation of the Diffusion Advection equation:
+        .. math::
+            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \
+            \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
         '''
         return self.dt * self.Ke * (self.T[2:] - 2 * self.T[1:-1] + self.T[0:-2]) / self.z ** 2 - self.dt * \
             (self.q * self.PwCw) / self.pc * (self.T[2:] - self.T[0:-2]) / 2 * self.z + self.T[1:-1]
 
     def max_timestep(self):
-        return self.z ** 2 / (2 * self.Ke)
+        '''
+        The maximum stable time step calculated with the equation:
 
-    def max_gridspace(self):
-        return (2 * self.Ke) / ((self.q * self.PwCw) / self.pc)
+        .. math::
+            \Delta T \leq \frac{z^2}{2 \cdot K_e}
+
+        :return: The maximum time step (s)
+        '''
+        return self.z ** 2 / (2 * self.Ke)
 
     def model(self, n_iterations, top_bc, bot_bc):
         '''
-        :param n_iterations:
-        :param top_bc:
-        :param bot_bc:
-        :return:
+        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
+        profile and the profile at all timesteps.
+
+        :param n_iterations: The number of iterations to run the model (integer)
+        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
+        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
+        :return: A list containing the final temperature depth profile as item zero and a list of the temperature \
+        profiles at each time step as the second element. If the iterations are to many it may be better to use the \
+        method model 2 which only returns the temperature profile at the final time step.
         '''
-        lis = []
+        T_t = []
         for i in range(n_iterations):
             self.T[0] = top_bc[i]
             self.T[-1] = bot_bc[i]
-            self.T[1:-1] = self.equation(self)
-            lis.append(self.T)
-        return self.T, lis
+            self.T[1:-1] = self.equation()
+            T_t.append(self.T)
+        return self.T, T_t
+
+    def model2(self, n_iterations, top_bc, bot_bc):
+        '''
+        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
+        profile. This is faster and uses less ram.
+
+        :param n_iterations: The number of iterations to run the model (integer)
+        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
+        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
+        :return: The final temperature depth profile.
+
+        '''
+        for i in range(n_iterations):
+            self.T[0] = top_bc[i]
+            self.T[-1] = bot_bc[i]
+            self.T[1:-1] = self.equation()
+        return self.T
 
