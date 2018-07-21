@@ -152,13 +152,13 @@ def peclet(PwCw, q, L, ke):
     return (PwCw * q * L)/ke
 
 
-def hatch_alpha(vt, ke, T):
+def hatch_alpha(vt, ke, tau):
     r'''
     The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.
 
     :param vt: vt the thermal front velocity
     :param ke: ke the effective thermal conductivity (W/m C)
-    :param T: period of oscillation (s)
+    :param tau: period of oscillation (s)
     :return: a Hatch Alpha
 
     This is computed with the equation:
@@ -167,5 +167,5 @@ def hatch_alpha(vt, ke, T):
         a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}
 
     '''
-    return (vt ** 4 + (8 * np.pi * (ke / T) ** 2)) * 0.5
+    return (vt ** 4 + (8 * np.pi * (ke / tau) ** 2)) * 0.5
 

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import optimize
 from mylib.signal import filter_amp
-
+from mylib.hydro_funcs import vt_, vs_, hatch_alpha
 
 class BP:
     def __init__(self, PwCw, L, k, To, Tl, z):
@@ -73,8 +73,8 @@ class BP:
         :param T: temperature at z (C)
         :return: an estimate of q
         '''
-        result = optimize.minimize(self.objective, (0.00001),(T),
-                                   tol=1e-50, method="Nelder-Mead",  options= {'maxiter': 1000})
+        result = optimize.minimize(self.objective, (0.00001),(T),tol=1e-50, method="Nelder-Mead",
+                                   options= {'maxiter': 1000})
         return result
 
 class Stallman:
@@ -277,3 +277,58 @@ class NumericalTransport:
             self.T[1:-1] = self.equation()
         return self.T
 
+class HatchAmplitude:
+
+    def __init__(self, pc, PwCw, Ke, z, Ar, ne, tau):
+        '''
+        The Hatch amplitude ratio method.
+
+        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
+        :param PwCw: volumetric heat capacity of water (J/m3C)
+        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
+        :param z: Depth (m)
+        :param Ar: Ar = Ad / As where A_d is deep sensor and A_s is shallow sensor
+        :param ne: effective porosity (unit-less)
+        :param tau: the period of oscillation (s)
+        :return: an instance of the Hatch amplitude class
+        '''
+        self.PwCw = PwCw
+        self.pc = pc
+        self.PwCw = PwCw
+        self.Ke = Ke
+        self.z = z
+        self.Ar = Ar
+        self.ne = ne
+        self.tau = tau
+
+    def equation(self, q):
+        r'''
+        The Hatch amplitude method computed with the equation:
+
+        .. math::
+            qA_r = \frac{pc}{\rho_w C_w} \cdot \Bigg(\frac{2 \cdot K_e}{\Delta z} \cdot ln(A_r) + \sqrt{\frac{a + \
+            v_t^2}{2}}\Bigg)
+
+        '''
+        vs = vs_(q, self.ne)
+        vt = vt_(self.PwCw, vs, self.ne, self.pc)
+        a = hatch_alpha(vt, self.Ke, self.tau)
+        return (self.pc / self.PwCw) * (((2* self.Ke) / self.z) * np.log(self.Ar) + ((a + vt ** 2) / 2) ** 0.5)
+
+    def objective(self, q, Ak):
+        '''
+
+        :param q: groundwater flux positive downwards (m/s)
+        :param Ak: observed amplitude ratio
+        :return: the absolute error between the modelled and observed amplitudes
+        '''
+        return np.abs(self.equation(q) - Ak)
+
+    def optimise(self, Ak):
+        '''
+        :param Ak: observed amplitude ratio
+        :return: The optimal q value
+        '''
+        result = optimize.minimize(self.objective, (0.00001),(Ak), tol=1e-50, method="Nelder-Mead",
+                                   options= {'maxiter': 1000})
+        return result
