@@ -13,11 +13,8 @@ def locate_minima(array, period = 24):
     :param period: The period for one ocillation (default = 24)
     :return: The index of the origin of the first oscillation.
     '''
-    gradient = np.gradient(array)
-    abs_gradient = np.abs(gradient)
-    minima = abs_gradient[0:period][gradient[0:period] > 0].min()
-    mask = abs_gradient[0:period] == minima
-    index = np.linspace(0, period-1, period)[mask]
+    mask = array[0:period] == array[0:period].min()
+    index = np.linspace(0, period-1, period)[mask] + (0.25 * period)
     return int(index[0])
 
 def filter_amp(array, period = 24):
@@ -70,9 +67,11 @@ def filter_amp(array, period = 24):
         T_A = (y.max() / (np.sin(b*(T/4)))) - y.mean()
         B_A = (y.min() / (np.sin(b*(3*T/4)))) + y.mean()
         return np.array([T_A, B_A]).mean()
+
     # Model to process data
     n_periods = int(len(array)/period)
     sin_wave = np.zeros(len(array))
+    fitted_wave = np.zeros(len(array))
     amplitudes = np.zeros(n_periods)
     x = np.linspace(0, period, period)
     for i in range(n_periods):
@@ -80,4 +79,5 @@ def filter_amp(array, period = 24):
         t_ind = b_ind + period
         amplitudes[i] = amp(array[b_ind:t_ind], period)
         sin_wave[b_ind:t_ind] = _y(x, amplitudes[i], period)
-    return [amplitudes, sin_wave]
+        fitted_wave[b_ind:t_ind] = _y(x, amplitudes[i], period, d = array[b_ind:t_ind].mean())
+    return amplitudes, sin_wave, fitted_wave
