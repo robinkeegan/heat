@@ -197,37 +197,21 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
 
 class NumericalTransport:
 
-    def __init__(self, T, z, dt, q, PwCw, pc, Ke):
+    def __init__(self, z, dt, PwCw, pc, Ke):
         '''
         Args:
-
-        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param z: The spacing between each temperature in the array (m).
         :param dt: The time step (s) for help choosing a stable time step see method .max_timestep
-        :param q: groundwater flux positive downwards (m/s)
         :param PwCw: volumetric heat capacity of water (J/m3 C)
         :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
         :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
         :return: An instance of the NumericalTransport class.
         '''
-        self.T = T
         self.z = z
         self.dt = dt
-        self.q = q
         self.PwCw = PwCw
         self.pc = pc
         self.Ke = Ke
-
-    def equation(self):
-        '''
-
-        A finite difference implementation of the Diffusion Advection equation:
-        .. math::
-            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \
-            \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
-        '''
-        return self.dt * self.Ke * (self.T[2:] - 2 * self.T[1:-1] + self.T[0:-2]) / self.z ** 2 - self.dt * \
-            (self.q * self.PwCw) / self.pc * (self.T[2:] - self.T[0:-2]) / 2 * self.z + self.T[1:-1]
 
     def max_timestep(self):
         '''
@@ -240,11 +224,28 @@ class NumericalTransport:
         '''
         return self.z ** 2 / (2 * self.Ke)
 
-    def model(self, n_iterations, top_bc, bot_bc):
+    def equation(self, q, T):
+        '''
+        Args:
+        :param q: groundwater flux positive downwards (m/s)
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
+
+        A finite difference implementation of the Diffusion Advection equation:
+        .. math::
+            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \
+            \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
+        '''
+        return self.dt * self.Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / self.z ** 2 - self.dt * (q * self.PwCw) / self.pc \
+               * (T[2:] - T[0:-2]) / 2 * self.z + T[1:-1]
+
+    def model(self, q, T, n_iterations, top_bc, bot_bc):
         '''
         Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
         profile and the profile at all timesteps.
 
+        Args:
+        :param q: groundwater flux positive downwards (m/s)
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
@@ -254,17 +255,20 @@ class NumericalTransport:
         '''
         T_t = []
         for i in range(n_iterations):
-            self.T[0] = top_bc[i]
-            self.T[-1] = bot_bc[i]
-            self.T[1:-1] = self.equation()
-            T_t.append(self.T)
-        return self.T, T_t
+            T[0] = top_bc[i]
+            T[-1] = bot_bc[i]
+            T[1:-1] = self.equation(q, T)
+            T_t.append(T.tolist())
+        return T, T_t
 
-    def model2(self, n_iterations, top_bc, bot_bc):
+    def model2(self, q, T, n_iterations, top_bc, bot_bc):
         '''
         Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
         profile. This is faster and uses less ram.
 
+        Args:
+        :param q: groundwater flux positive downwards (m/s)
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
@@ -272,10 +276,10 @@ class NumericalTransport:
 
         '''
         for i in range(n_iterations):
-            self.T[0] = top_bc[i]
-            self.T[-1] = bot_bc[i]
-            self.T[1:-1] = self.equation()
-        return self.T
+            T[0] = top_bc[i]
+            T[-1] = bot_bc[i]
+            T[1:-1] = self.equation(q, T)
+        return T
 
 class HatchAmplitude:
 
