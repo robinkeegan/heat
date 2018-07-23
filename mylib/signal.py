@@ -81,3 +81,35 @@ def filter_amp(array, period = 24):
         sin_wave[b_ind:t_ind] = _y(x, amplitudes[i], period)
         fitted_wave[b_ind:t_ind] = _y(x, amplitudes[i], period, d = array[b_ind:t_ind].mean())
     return amplitudes, sin_wave, fitted_wave
+
+
+def detrend(x, order=1, axis=0):
+    """
+    Detrend an array with a trend of given order along axis 0 or 1 using the StatsModels Algorithm.
+
+    Args:
+
+    :param x : 1d or 2d data, if 2d, then each row or column is independently detrended with the same trendorder, but independent trend estimates
+    :param order : specifies the polynomial order of the trend, zero is constant, one is linear trend, two is quadratic trend.
+    :param axis : axis can be either 0, observations by rows or 1, observations by columns
+
+    :returns: detrended data series. The detrended series is the residual of the linear regression of the data on the trend of given order.
+    """
+    if x.ndim == 2 and int(axis) == 1:
+        x = x.T
+    elif x.ndim > 2:
+        raise NotImplementedError('x.ndim > 2 is not implemented until it is needed')
+
+    nobs = x.shape[0]
+    if order == 0:
+        # Special case demean
+        resid = x - x.mean(axis=0)
+    else:
+        trends = np.vander(np.arange(float(nobs)), N=order + 1)
+        beta = np.linalg.pinv(trends).dot(x)
+        resid = x - np.dot(trends, beta)
+
+    if x.ndim == 2 and int(axis) == 1:
+        resid = resid.T
+
+    return resid

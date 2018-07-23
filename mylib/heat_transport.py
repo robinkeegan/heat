@@ -270,6 +270,40 @@ class NumericalTransport:
         df_.columns = names.tolist()
         return T, df_
 
+    def objective(self, q, T, n_iterations, top_bc, bot_bc, observed):
+        '''
+        Objective method returns the error between an observed and measured 2d array (including boundary conditions).
+
+        Args:
+        :param q: groundwater flux positive downwards (m/s)
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
+        :param n_iterations: The number of iterations to run the model (integer)
+        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
+        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
+        :param observed: A 2d observed array for all time steps (including the boundary conditions).
+        :returns The absolute error between the observed and modelled profiles
+        '''
+        evaluation = self.model(q, T, n_iterations, top_bc, bot_bc)
+        ae = (np.abs(evaluation[1].values - observed)).sum()
+        return ae
+
+    def optimise(self, T, n_iterations, top_bc, bot_bc, observed):
+        '''
+        Optimisation method returns an optimal estimaate of q. Note for big models it may be necessary to change the \
+        "maxiter" option in the "optimise.minimise" function.
+
+        Args:
+        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
+        :param n_iterations: The number of iterations to run the model (integer)
+        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
+        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
+        :param observed: A 2d observed array for all time steps (including the boundary conditions).
+        :returns An estimate of the groundwater flux.
+        '''
+        result = optimize.minimize(self.objective, (0.00001), (T, n_iterations, top_bc, bot_bc, observed),
+                                   tol=1e-50, method="Nelder-Mead", options={'maxiter': 1000})
+        return result
+
     def model2(self, q, T, n_iterations, top_bc, bot_bc):
         '''
         Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
@@ -289,6 +323,7 @@ class NumericalTransport:
             T[-1] = bot_bc[i]
             T[1:-1] = self.equation(q, T)
         return T
+
 
 class HatchAmplitude:
 
