@@ -2,6 +2,7 @@ import numpy as np
 from scipy import optimize
 from mylib.signal import filter_amp
 from mylib.hydro_funcs import vt_, vs_, hatch_alpha
+import pandas as pd
 
 class BP:
     def __init__(self, PwCw, L, k, To, Tl, z):
@@ -9,7 +10,6 @@ class BP:
         Initiates the Bredehoeft and Papaopulos (1965) solution model class
 
         Args:
-
         :param z: depth (m)
         :param L: maximum depth (m)
         :param To: temperature at z = 0 (C)
@@ -61,6 +61,7 @@ class BP:
         An objective function which calculates the absolute error between a modelled and observed profile for a flux \
         estimate.
 
+        Args:
         :param T: temperature at z (C)
         :return: absolute error between modelled T(z) and observed T at z.
         '''
@@ -70,6 +71,7 @@ class BP:
         '''
         When q is unknown this function will estimate optimal q value for a given profile.
 
+        Args:
         :param T: temperature at z (C)
         :return: an estimate of q
         '''
@@ -78,24 +80,23 @@ class BP:
         return result
 
 class Stallman:
-    '''
-    The Stallman model class
-
-    Args:
-
-    :param PwCw: Volumetric heat capacity of water (J/m3 C)
-    :param tau: Period of oscillation (s)
-    :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
-    :param ne: effective porosity (unit-less)
-    :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
-    :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
-    :param z: Positive depth below surface where z > 0 and z < infinity.
-    :param t: Time/s for evaluation can be a value or a numpy array (s)
-    :return: an instance of the Stallman class
-
-    '''
 
     def __init__(self, PwCw, tau, Ke, ne, pc, dT, z, t):
+        '''
+        The Stallman model class
+
+        Args:
+        :param PwCw: Volumetric heat capacity of water (J/m3 C)
+        :param tau: Period of oscillation (s)
+        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
+        :param ne: effective porosity (unit-less)
+        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
+        :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
+        :param z: Positive depth below surface where z > 0 and z < infinity.
+        :param t: Time/s for evaluation can be a value or a numpy array (s)
+        :return: an instance of the Stallman class
+
+        '''
         self.PwCw = PwCw
         self.tau = tau
         self.k = Ke
@@ -109,6 +110,8 @@ class Stallman:
         r'''
         Stallman Constants for the Stallman (1965) Heat Transport equation
 
+        Args:
+        :param q: groundwater flux positive downwards (m/s)
         :return: a list with the stallman constants a and b as the zeroth and first elements.
 
         This is computed using the equations:
@@ -154,10 +157,10 @@ class Stallman:
 
     def objective(self, q, dTz):
         '''
-
+        Args:
         :param q: groundwater flux positive downwards (m/s)
         :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
-        :return:
+        :return: The absolute error between modelled and observed dTz
         '''
         constants = self.constants(q)
         evaluation = self.equation()
@@ -166,6 +169,7 @@ class Stallman:
 
     def optimise(self, dTz):
         '''
+        Args:
         :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
         :return: An estimate of the optimal flux
         '''
@@ -178,6 +182,7 @@ def briggs_extinction_depth(ke, Am, Ao, a, vt):
     r'''
     Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.
 
+    Args:
     :param ke: effective thermal conductivity (W/m C)
     :param Am: minimum detectable amplitude for sensor precision (C)
     :param Ao: amplitude of the signal at surface (C)
@@ -249,9 +254,9 @@ class NumericalTransport:
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
-        :return: A list containing the final temperature depth profile as item zero and a list of the temperature \
+        :return: A list containing the final temperature depth profile as item zero and a dataframe of the temperature \
         profiles at each time step as the second element. If the iterations are to many it may be better to use the \
-        method model 2 which only returns the temperature profile at the final time step.
+        method "model2" which only returns the temperature profile at the final time step.
         '''
         T_t = []
         for i in range(n_iterations):
@@ -259,7 +264,11 @@ class NumericalTransport:
             T[-1] = bot_bc[i]
             T[1:-1] = self.equation(q, T)
             T_t.append(T.tolist())
-        return T, T_t
+
+        names = np.linspace(0, (len(T) - 1) * self.z, len(T))
+        df_ = pd.DataFrame(T_t)
+        df_.columns = names.tolist()
+        return T, df_
 
     def model2(self, q, T, n_iterations, top_bc, bot_bc):
         '''
@@ -287,6 +296,7 @@ class HatchAmplitude:
         '''
         The Hatch amplitude ratio method.
 
+        Args:
         :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
         :param PwCw: volumetric heat capacity of water (J/m3C)
         :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
@@ -323,6 +333,7 @@ class HatchAmplitude:
         '''
         Objective function to find the absolute error between calculated and observed amplitudes.
 
+        Args:
         :param q: groundwater flux positive downwards (m/s)
         :param Ak: observed amplitude ratio
         :return: the absolute error between the modelled and observed amplitudes
@@ -333,6 +344,8 @@ class HatchAmplitude:
         '''
         Optimisation function to return the q value which minimises the difference between the observed and calculated \
         amplitudes.
+
+        Args:
         :param Ak: observed amplitude ratio
         :return: The optimal q value
         '''
