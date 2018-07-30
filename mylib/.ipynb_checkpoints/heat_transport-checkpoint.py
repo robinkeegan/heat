@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import optimize
-from mylib.signal import amplitude
+from mylib.signal import filter_amp
 from mylib.hydro_funcs import vt_, vs_, hatch_alpha
 import pandas as pd
 
@@ -79,17 +79,16 @@ class BP:
                                    options= {'maxiter': 1000})
         return result
 
-
 class Stallman:
 
-    def __init__(self, PwCw, tau, K, ne, pc, dT, z, t):
+    def __init__(self, PwCw, tau, Ke, ne, pc, dT, z, t):
         '''
         The Stallman model class
 
         Args:
         :param PwCw: Volumetric heat capacity of water (J/m3 C)
         :param tau: Period of oscillation (s)
-        :param K: The effective thermal conductivity (W/m C)
+        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
         :param ne: effective porosity (unit-less)
         :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
         :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
@@ -100,7 +99,7 @@ class Stallman:
         '''
         self.PwCw = PwCw
         self.tau = tau
-        self.k = K
+        self.k = Ke
         self.ne = ne
         self.pc = pc
         self.dT = dT
@@ -158,8 +157,6 @@ class Stallman:
 
     def objective(self, q, dTz):
         '''
-        Objective function to calculate absolute error between observed and modelled amplitude
-
         Args:
         :param q: groundwater flux positive downwards (m/s)
         :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
@@ -167,31 +164,26 @@ class Stallman:
         '''
         constants = self.constants(q)
         evaluation = self.equation()
-        evaluation = np.concatenate((evaluation, evaluation, evaluation))
-        t = np.linspace(0, 3 * self.tau, int(3 * len(self.t)))
-        modelled_amp = amplitude(t, evaluation, period=int(self.tau))[3]
-        ae = np.abs(dTz - modelled_amp)
+        ae = np.abs(dTz - filter_amp(evaluation)[0])
         return ae
 
     def optimise(self, dTz):
         '''
-        Optimisation function to calculate the flux which minimises the result of the objective function.
-
         Args:
         :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
         :return: An estimate of the optimal flux
         '''
-        result = optimize.minimize(self.objective, (0.00001), (dTz), tol=1e-50, method="Nelder-Mead",
-                                   options={'maxiter': 1000})
+        result = optimize.minimize(self.objective, (0.00001),(dTz),tol=1e-50, method="Nelder-Mead",
+                                   options= {'maxiter': 1000})
         return result
 
 
-def briggs_extinction_depth(K, Am, Ao, a, vt):
+def briggs_extinction_depth(ke, Am, Ao, a, vt):
     r'''
     Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.
 
     Args:
-    :param K: effective thermal conductivity (W/m C)
+    :param ke: effective thermal conductivity (W/m C)
     :param Am: minimum detectable amplitude for sensor precision (C)
     :param Ao: amplitude of the signal at surface (C)
     :param a: Hatch alpha term (see hydro_funcs)
@@ -205,7 +197,7 @@ def briggs_extinction_depth(K, Am, Ao, a, vt):
 
     '''
 
-    return 2 * K * (np.log(Am/Ao)) / (vt - (a + (vt**2 / 2))**0.5)
+    return 2 * ke * (np.log(Am/Ao)) / (vt - (a + (vt**2 / 2))**0.5)
 
 
 class NumericalTransport:
@@ -335,15 +327,16 @@ class NumericalTransport:
 
 class HatchAmplitude:
 
-    def __init__(self, pc, PwCw, Ke, dz, ne, tau):
+    def __init__(self, pc, PwCw, Ke, dz, Ar, ne, tau):
         '''
         The Hatch amplitude ratio method.
 
         Args:
         :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
         :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param Ke: The effective thermal diffusivity (W/m C) see hydro_funcs.ke_ for help
-        :param dz: Distance between sensors (m)
+        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
+        :param z: Depth (m)
+        :param Ar: Ar = Ad / As where A_d is deep sensor and A_s is shallow sensor
         :param ne: effective porosity (unit-less)
         :param tau: the period of oscillation (s)
         :return: an instance of the Hatch amplitude class
@@ -353,48 +346,45 @@ class HatchAmplitude:
         self.PwCw = PwCw
         self.Ke = Ke
         self.dz = dz
+        self.Ar = Ar
         self.ne = ne
         self.tau = tau
 
     def equation(self, q):
         r'''
-        The Hatch amplitude method calculating amplitude as a function of depth and flux:
-
-        Args:
-
-        :param q: groundwater flux positive downwards (m/s)
-        :returns: The amplitude ratio for a given flux and depth.
+        The Hatch amplitude method computed with the equation:
 
         .. math::
-            A_r = exp \Bigg( \frac{\Delta z}{2 \dot K_e} \Big( v - \sqrt{\frac{a + v^2}{2}} \Big) \Bigg)
+            qA_r = \frac{pc}{\rho_w C_w} \cdot \Bigg(\frac{2 \cdot K_e}{\Delta z} \cdot ln(A_r) + \sqrt{\frac{a + \
+            v_t^2}{2}}\Bigg)
 
         '''
         vs = vs_(q, self.ne)
         vt = vt_(self.PwCw, vs, self.ne, self.pc)
         a = hatch_alpha(vt, self.Ke, self.tau)
-        Ar = np.exp(self.dz / (2 * self.Ke) * (vt - np.sqrt((a + vt ** 2) / 2)))
-        return Ar
+        return np.exp((self.dz / (2 * self.Ke)) * (vt - np.sqrt((a + vt ** 2) / 2)))
 
-    def objective(self, q, Ar):
+    def objective(self, q, Ak):
         '''
         Objective function to find the absolute error between calculated and observed amplitudes.
 
         Args:
         :param q: groundwater flux positive downwards (m/s)
-        :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
+        :param Ak: observed amplitude ratio
         :return: the absolute error between the modelled and observed amplitudes
         '''
-        return np.abs(self.equation(q) - Ar)
+        return np.abs(self.equation(q) - Ak)
 
-    def optimise(self, Ar):
+    def optimise(self, Ak):
         '''
         Optimisation function to return the q value which minimises the difference between the observed and calculated \
         amplitudes.
 
         Args:
-        :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
+        :param Ak: observed amplitude ratio
         :return: The optimal q value
         '''
-        result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
-                                   options={'maxiter': 1000})
+        result = optimize.minimize(self.objective, (0.00001),(Ak), tol=1e-50, method="Nelder-Mead",
+                                   options= {'maxiter': 1000})
         return result
+

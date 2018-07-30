@@ -13,4 +13,5 @@ setup(name='mylib',
             "pandas >= 0.23.1",
             "numpy >= 1.14.5",
             "scipy >= 1.1.0",
+            "statsmodels >= 0.9.0",
       ])

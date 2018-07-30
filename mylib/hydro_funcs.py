@@ -89,7 +89,7 @@ def vt_full(ne, PwCw, PsCs, q):
 
 def ke_(Kw, Ks, ne, pc):
     r'''
-    Effective thermal conductivity
+    Effective thermal diffusivity
 
     Args:
 
@@ -109,7 +109,7 @@ def ke_(Kw, Ks, ne, pc):
 
 def ke_full(Kw, Ks, ne, PwCw, PsCs):
     r'''
-    The effective thermal conductivity without intermediately calculating bulk volumetric heat capacity of a \
+    The effective thermal diffusivity without intermediately calculating bulk volumetric heat capacity of a \
     saturated medium
 
     Args:
