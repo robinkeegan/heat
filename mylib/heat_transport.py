@@ -79,6 +79,64 @@ class BP:
                                    options= {'maxiter': 1000})
         return result
 
+    def solution(self, T):
+        r'''
+        Solve analytically for q at z = 0.5 L.
+        :param T: temperature at z (C)
+        :return: q at z = 0.5 L
+
+        This is computed with:
+
+        When $\frac{z}{L} = 0.5$ and $\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} > 0$:
+
+
+        $q$ can be solved with:
+
+
+        .. math::
+            q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
+
+        '''
+
+        return self.k * np.log((self.Tl ** 2 - 2.0 * self.Tl * self.Tz + self.Tz ** 2) / (self.To ** 2 - 2.0 * self.To * self.Tz + T ** 2)) / (self.L * self.PwCw)
+
+
+class TurcotteSchubert:
+    '''The Turcotte Schubert steady state one dimensional heat transport equation.'''
+
+    def __init__(self, Tl, To, PwCw, k, z):
+        '''
+
+        :param Tl: The temperature at L where L is a depth where dT/dz = 0
+        :param To: The temperature at z = 0
+        :param PwCw: The volumetric heat capacity of water (J/m3C)
+        :param k: The thermal conductivity (W/m/C)
+        :param z: The depth (m)
+        '''
+        self.Tl = Tl
+        self.To = To
+        self.PwCw = PwCw
+        self.k = k
+        self.z = z
+
+    def tz(self, q):
+        '''
+        Calculate the temperature at an arbitrary depth.
+
+        :param q: groundwater flux positive downwards (m/s)
+        :return: temperature at z
+        '''
+        return (self.To - self.Tl) * np.exp(-q * self.PwCw / self.k * self.z) + self.Tl
+
+    def q(self, Tz):
+        '''
+        Calculate the flux values.
+
+        :param Tz: The temperature at z (C)
+        :return: The groundwater flux in m/s
+        '''
+        return -self.k / (self.PwCw * self.z) * np.log((Tz - self.Tl) / (self.To - self.Tl))
+
 
 class Stallman:
 
