@@ -1,24 +1,24 @@
 import numpy as np
 from scipy import optimize
-from mylib.signal import amplitude
 from mylib.hydro_funcs import vt_, vs_, hatch_alpha
 import pandas as pd
 
+
 class BP:
+    '''
+    Initiates the Bredehoeft and Papaopulos (1965) solution model class
+
+    Args:
+
+    :param z: depth (m)
+    :param L: maximum depth (m)
+    :param To: temperature at z = 0 (C)
+    :param Tl: temperature at z = L (C)
+    :param PwCw: volumetric heat capacity of water (J/m3C)
+    :param k: thermal conductivity (W/m/C)
+    '''
+
     def __init__(self, PwCw, L, k, To, Tl, z):
-        '''
-        Initiates the Bredehoeft and Papaopulos (1965) solution model class
-
-        Args:
-        :param z: depth (m)
-        :param L: maximum depth (m)
-        :param To: temperature at z = 0 (C)
-        :param Tl: temperature at z = L (C)
-        :param q: groundwater flux positive downwards (m/s)
-        :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param k: thermal conductivity (W/m/C)
-
-        '''
         self.PwCw = PwCw
         self.L = L
         self.k = k
@@ -29,6 +29,11 @@ class BP:
     def equation(self, q):
         r'''
         Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
+
+        Args:
+
+        :param q: groundwater flux positive downwards (m/s)
+        :return: Temperature at z
 
         This is computed using the equation:
 
@@ -62,8 +67,10 @@ class BP:
         estimate.
 
         Args:
+
         :param T: temperature at z (C)
         :return: absolute error between modelled T(z) and observed T at z.
+
         '''
         return (np.abs(self.equation(q) - T)).sum()
 
@@ -72,8 +79,10 @@ class BP:
         When q is unknown this function will estimate optimal q value for a given profile.
 
         Args:
+
         :param T: temperature at z (C)
         :return: an estimate of q
+
         '''
         result = optimize.minimize(self.objective, (0.00001),(T),tol=1e-50, method="Nelder-Mead",
                                    options= {'maxiter': 1000})
@@ -82,16 +91,26 @@ class BP:
     def solution(self, T):
         r'''
         Solve analytically for q at z = 0.5 L.
+
+        Args:
+
         :param T: temperature at z (C)
         :return: q at z = 0.5 L
 
         This is computed with:
 
-        When $\frac{z}{L} = 0.5$ and $\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} > 0$:
+        When
+
+        .. math::
+            \frac{z}{L} = 0.5
+
+        and
+
+        .. math::
+            \frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} > 0
 
 
-        $q$ can be solved with:
-
+        q can be solved with:
 
         .. math::
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
@@ -102,17 +121,21 @@ class BP:
 
 
 class TurcotteSchubert:
-    '''The Turcotte Schubert steady state one dimensional heat transport equation.'''
+    '''
+    The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling\
+    it is unclear what direction q is positive in.
+
+    Args:
+
+    :param Tl: The temperature at L where L is a depth where dT/dz = 0
+    :param To: The temperature at z = 0
+    :param PwCw: The volumetric heat capacity of water (J/m3C)
+    :param k: The thermal conductivity (W/m/C)
+    :param z: The depth (m)
+
+    '''
 
     def __init__(self, Tl, To, PwCw, k, z):
-        '''
-
-        :param Tl: The temperature at L where L is a depth where dT/dz = 0
-        :param To: The temperature at z = 0
-        :param PwCw: The volumetric heat capacity of water (J/m3C)
-        :param k: The thermal conductivity (W/m/C)
-        :param z: The depth (m)
-        '''
         self.Tl = Tl
         self.To = To
         self.PwCw = PwCw
@@ -120,42 +143,56 @@ class TurcotteSchubert:
         self.z = z
 
     def tz(self, q):
-        '''
+        r'''
         Calculate the temperature at an arbitrary depth.
+
+        Args:
 
         :param q: groundwater flux positive downwards (m/s)
         :return: temperature at z
+
+        Computed using the equation:
+
+        .. math::
+            T_z = (T_o - T_l) \cdot e^{\frac{- q \cdot \rho _w c_w \cdot z}{k}} + T_l
+
         '''
         return (self.To - self.Tl) * np.exp(-q * self.PwCw / self.k * self.z) + self.Tl
 
     def q(self, Tz):
-        '''
+        r'''
         Calculate the flux values.
+
+        Args:
 
         :param Tz: The temperature at z (C)
         :return: The groundwater flux in m/s
+
+        .. math::
+            \frac{-k}{\rho_w c_w \cdot z} \cdot \log{\Big(\frac{T_z-T_l}{T_o - T_l}\Big)}
+
         '''
         return -self.k / (self.PwCw * self.z) * np.log((Tz - self.Tl) / (self.To - self.Tl))
 
 
 class Stallman:
+    '''
+    The Stallman model class
+
+    Args:
+
+    :param PwCw: Volumetric heat capacity of water (J/m3 C)
+    :param tau: Period of oscillation (s)
+    :param K: The effective thermal conductivity (W/m C)
+    :param ne: effective porosity (unit-less)
+    :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C)
+    :param z: Positive depth below surface where z > 0 and z < infinity.
+    :param t: Time/s for evaluation can be a value or a numpy array (s)
+    :return: an instance of the Stallman class
+
+    '''
 
     def __init__(self, PwCw, tau, K, ne, pc, z, t):
-        '''
-        The Stallman model class
-
-        Args:
-        :param PwCw: Volumetric heat capacity of water (J/m3 C)
-        :param tau: Period of oscillation (s)
-        :param K: The effective thermal conductivity (W/m C)
-        :param ne: effective porosity (unit-less)
-        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
-        :param dT: The amplitude of the oscillation at z=0 (C) see signal._filter for help extracting amplitude
-        :param z: Positive depth below surface where z > 0 and z < infinity.
-        :param t: Time/s for evaluation can be a value or a numpy array (s)
-        :return: an instance of the Stallman class
-
-        '''
         self.PwCw = PwCw
         self.tau = tau
         self.k = K
@@ -169,6 +206,7 @@ class Stallman:
         Stallman Constants for the Stallman (1965) Heat Transport equation
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :return: a list with the stallman constants a and b as the zeroth and first elements.
 
@@ -200,7 +238,7 @@ class Stallman:
 
     def equation(self, a, b):
         r'''
-        The Stallman (1965) heat transport equation rearranged for amplitude ratio
+        The Stallman (1965) heat transport equation arranged for amplitude ratio
 
         Args:
 
@@ -221,9 +259,11 @@ class Stallman:
         Objective function to calculate absolute error between observed and modelled amplitude ratio
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: The absolute error between modelled and observed dTz
+
         '''
         a, b = self.constants(q)
         evaluation = self.equation(a, b)
@@ -235,8 +275,10 @@ class Stallman:
         Optimisation function to calculate the flux which minimises the result of the objective function.
 
         Args:
+
         :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: An estimate of the optimal flux (m/s positive downwards)
+
         '''
         result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
                                    options={'maxiter': 1000})
@@ -248,6 +290,7 @@ def briggs_extinction_depth(K, Am, Ao, a, vt):
     Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.
 
     Args:
+
     :param K: effective thermal conductivity (W/m C)
     :param Am: minimum detectable amplitude for sensor precision (C)
     :param Ao: amplitude of the signal at surface (C)
@@ -266,17 +309,21 @@ def briggs_extinction_depth(K, Am, Ao, a, vt):
 
 
 class NumericalTransport:
+    '''
+    Numerical model class
+
+    Args:
+
+    :param z: The spacing between each temperature in the array (m).
+    :param dt: The time step (s) for help choosing a stable time step
+    :param PwCw: volumetric heat capacity of water (J/m3 C)
+    :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C)
+    :param Ke: The effective thermal conductivity (W/m C)
+    :return: An instance of the NumericalTransport class.
+
+    '''
 
     def __init__(self, z, dt, PwCw, pc, Ke):
-        '''
-        Args:
-        :param z: The spacing between each temperature in the array (m).
-        :param dt: The time step (s) for help choosing a stable time step see method .max_timestep
-        :param PwCw: volumetric heat capacity of water (J/m3 C)
-        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
-        :param Ke: The effective thermal conductivity (W/m C) see hydro_funcs.ke_ for help
-        :return: An instance of the NumericalTransport class.
-        '''
         self.z = z
         self.dt = dt
         self.PwCw = PwCw
@@ -284,7 +331,7 @@ class NumericalTransport:
         self.Ke = Ke
 
     def max_timestep(self):
-        '''
+        r'''
         The maximum stable time step calculated with the equation:
 
         .. math::
@@ -295,18 +342,21 @@ class NumericalTransport:
         return self.z ** 2 / (2 * self.Ke)
 
     def equation(self, q, T):
-        '''
+        r'''
+        Governing heat transport equation:
+
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
 
         A finite difference implementation of the Diffusion Advection equation:
+
         .. math::
-            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \
-            \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
+            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
+
         '''
-        return self.dt * self.Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / self.z ** 2 - self.dt * (q * self.PwCw) / self.pc \
-               * (T[2:] - T[0:-2]) / 2 * self.z + T[1:-1]
+        return self.dt * self.Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / self.z ** 2 - self.dt * (q * self.PwCw) / self.pc * (T[2:] - T[0:-2]) / 2 * self.z + T[1:-1]
 
     def model(self, q, T, n_iterations, top_bc, bot_bc):
         '''
@@ -314,6 +364,7 @@ class NumericalTransport:
         profile and the profile at all timesteps.
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
@@ -322,6 +373,7 @@ class NumericalTransport:
         :return: A list containing the final temperature depth profile as item zero and a dataframe of the temperature \
         profiles at each time step as the second element. If the iterations are to many it may be better to use the \
         method "model2" which only returns the temperature profile at the final time step.
+
         '''
         T_t = []
         for i in range(n_iterations):
@@ -340,13 +392,15 @@ class NumericalTransport:
         Objective method returns the error between an observed and measured 2d array (including boundary conditions).
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
         :param observed: A 2d observed array for all time steps (including the boundary conditions).
-        :returns The absolute error between the observed and modelled profiles
+        :returns: The absolute error between the observed and modelled profiles
+
         '''
         evaluation = self.model(q, T, n_iterations, top_bc, bot_bc)
         ae = (np.abs(evaluation[1].values - observed)).sum()
@@ -358,12 +412,14 @@ class NumericalTransport:
         "maxiter" option in the "optimise.minimise" function.
 
         Args:
+
         :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
         :param observed: A 2d observed array for all time steps (including the boundary conditions).
-        :returns An estimate of the groundwater flux.
+        :returns: An estimate of the groundwater flux.
+
         '''
         result = optimize.minimize(self.objective, (0.00001), (T, n_iterations, top_bc, bot_bc, observed),
                                    tol=1e-50, method="Nelder-Mead", options={'maxiter': 1000})
@@ -375,6 +431,7 @@ class NumericalTransport:
         profile. This is faster and uses less ram.
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
@@ -391,20 +448,22 @@ class NumericalTransport:
 
 
 class HatchAmplitude:
+    '''
+    The Hatch amplitude ratio method.
+
+    Args:
+
+    :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C)
+    :param PwCw: volumetric heat capacity of water (J/m3C)
+    :param Ke: The effective thermal diffusivity (W/m C)
+    :param dz: Distance between sensors (m)
+    :param ne: effective porosity (unit-less)
+    :param tau: the period of oscillation (s)
+    :return: an instance of the Hatch amplitude class
+
+    '''
 
     def __init__(self, pc, PwCw, Ke, dz, ne, tau):
-        '''
-        The Hatch amplitude ratio method.
-
-        Args:
-        :param pc: The bulk volumetric heat capacity of the saturated medium (J/m3C) see hydro_funcs.pc_ for help
-        :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param Ke: The effective thermal diffusivity (W/m C) see hydro_funcs.ke_ for help
-        :param dz: Distance between sensors (m)
-        :param ne: effective porosity (unit-less)
-        :param tau: the period of oscillation (s)
-        :return: an instance of the Hatch amplitude class
-        '''
         self.PwCw = PwCw
         self.pc = pc
         self.PwCw = PwCw
@@ -437,9 +496,11 @@ class HatchAmplitude:
         Objective function to find the absolute error between calculated and observed amplitudes.
 
         Args:
+
         :param q: groundwater flux positive downwards (m/s)
         :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: the absolute error between the modelled and observed amplitudes
+
         '''
         return np.abs(self.equation(q) - Ar)
 
@@ -449,8 +510,10 @@ class HatchAmplitude:
         amplitudes.
 
         Args:
+
         :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: The optimal q value
+
         '''
         result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
                                    options={'maxiter': 1000})

@@ -53,31 +53,29 @@ def min_max_amplitude(series, tau = 24):
     '''
     Min max peak picking amplitude method.
 
+    Args:
+
     :param series: a time series
     :param tau: the period of one oscillation as a length along the array
     :returns: An array of amplitudes for each period.
 
     '''
-    t = np.linspace(0, len(series)-1, len(series))
-    fs = 1/ tau
-    # compute number of full days in the time series
-    days = int(np.floor(len(series)*fs))
-    # truncate the series, keeping full days
-    M = int(np.floor(days/fs))
+    t = np.linspace(0, len(series) - 1, len(series))
+    fs = 1 / tau
+    days = int(np.floor(len(series) * fs))
+    M = int(np.floor(days / fs))
     series = series[0:M]
     t = t[0:M]
-    # compute the average for each day
     tmid = np.mean(np.split(t, days), axis=1)
     reshaped = np.split(series, days)
     minvalue = np.amin(reshaped, axis=1)
     maxvalue = np.amax(reshaped, axis=1)
     variation = maxvalue - minvalue
-    amplitude = 0.5*variation
-    ## Plot
-    plt.bar(tmid, 2*amplitude, 1/fs, minvalue, color=(0.8, 0.8, 0.8), edgecolor=(0.7, 0.7, 0.7))
+    amplitude_ = 0.5 * variation
+    plt.bar(tmid, 2 * amplitude_, 1 / fs, minvalue, color=(0.8, 0.8, 0.8), edgecolor=(0.7, 0.7, 0.7))
     plt.plot(t, series)
     plt.show()
-    return amplitude
+    return amplitude_
 
 
 def phase_offset(y1, y2, period=24):
@@ -90,6 +88,7 @@ def phase_offset(y1, y2, period=24):
     :param y2: Time series 2
     :param period: The period of one oscillation default = 24
     :return: the lag between time series 1 and 2, and the index of the max correlation.
+
     '''
     correlation = ccf(y2, y1)
     index = np.argmax(correlation[0:int(2 * period)])

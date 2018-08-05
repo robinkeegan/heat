@@ -1,7 +1,9 @@
 import numpy as np
 
+
 def pc_(ne, PwCw, PsCs):
     r'''
+
     Bulk volumetric heat capacity of a saturated medium
 
     Args:
@@ -18,6 +20,7 @@ def pc_(ne, PwCw, PsCs):
 
     '''
     return ne * PwCw + (1-ne) * PsCs
+
 
 def vs_(q, ne):
     r'''
@@ -36,6 +39,7 @@ def vs_(q, ne):
 
     '''
     return q / ne
+
 
 def vt_(PwCw, vs, ne, pc):
     r'''
@@ -87,6 +91,7 @@ def vt_full(ne, PwCw, PsCs, q):
     vs = vs_(q, ne)
     return vs * (PwCw/pc) * ne
 
+
 def ke_(Kw, Ks, ne, pc):
     r'''
     Effective thermal diffusivity
@@ -106,6 +111,7 @@ def ke_(Kw, Ks, ne, pc):
 
     '''
     return (Kw ** ne * Ks ** (1 - ne))/pc
+
 
 def ke_full(Kw, Ks, ne, PwCw, PsCs):
     r'''
@@ -133,9 +139,12 @@ def ke_full(Kw, Ks, ne, PwCw, PsCs):
     pc = pc_(ne, PwCw, PsCs)
     return (Kw**ne * Ks ** (1 -ne))/pc
 
+
 def peclet(PwCw, q, L, ke):
     r'''
     The Peclet number for heat transport. Note when Peclet number < 0.5 dispersivity can be neglected (Rau et al. 2012).
+
+    Args:
 
     :param PwCw: volumetric heat capacity of water (J/m3C)
     :param q: groundwater flux (m/s, positive upward)
@@ -155,6 +164,8 @@ def peclet(PwCw, q, L, ke):
 def hatch_alpha(vt, ke, tau):
     r'''
     The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.
+
+    Args:
 
     :param vt: vt the thermal front velocity
     :param ke: ke the effective thermal conductivity (W/m C)
