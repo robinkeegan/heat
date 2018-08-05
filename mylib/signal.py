@@ -2,6 +2,7 @@ import numpy as np
 from statsmodels.tsa.stattools import ccf
 from scipy import signal
 from statsmodels.tsa.tsatools import detrend
+import matplotlib.pyplot as plt
 
 
 def amplitude(x, y, period=24, tol=0.5, nout=10000):
@@ -46,6 +47,37 @@ def get_amp(array):
         subset = array[bind:tind]
         output[i] = amplitude(np.linspace(0, len(subset) - 1, len(subset)), subset)[3]
     return output
+
+
+def min_max_amplitude(series, tau = 24):
+    '''
+    Min max peak picking amplitude method.
+
+    :param series: a time series
+    :param tau: the period of one oscillation as a length along the array
+    :returns: An array of amplitudes for each period.
+
+    '''
+    t = np.linspace(0, len(series)-1, len(series))
+    fs = 1/ tau
+    # compute number of full days in the time series
+    days = int(np.floor(len(series)*fs))
+    # truncate the series, keeping full days
+    M = int(np.floor(days/fs))
+    series = series[0:M]
+    t = t[0:M]
+    # compute the average for each day
+    tmid = np.mean(np.split(t, days), axis=1)
+    reshaped = np.split(series, days)
+    minvalue = np.amin(reshaped, axis=1)
+    maxvalue = np.amax(reshaped, axis=1)
+    variation = maxvalue - minvalue
+    amplitude = 0.5*variation
+    ## Plot
+    plt.bar(tmid, 2*amplitude, 1/fs, minvalue, color=(0.8, 0.8, 0.8), edgecolor=(0.7, 0.7, 0.7))
+    plt.plot(t, series)
+    plt.show()
+    return amplitude
 
 
 def phase_offset(y1, y2, period=24):

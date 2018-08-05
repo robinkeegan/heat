@@ -14,4 +14,5 @@ setup(name='mylib',
             "numpy >= 1.14.5",
             "scipy >= 1.1.0",
             "statsmodels >= 0.9.0",
+            "matplotlib >= 2.2.2",
       ])

@@ -140,7 +140,7 @@ class TurcotteSchubert:
 
 class Stallman:
 
-    def __init__(self, PwCw, tau, K, ne, pc, dT, z, t):
+    def __init__(self, PwCw, tau, K, ne, pc, z, t):
         '''
         The Stallman model class
 
@@ -161,7 +161,6 @@ class Stallman:
         self.k = K
         self.ne = ne
         self.pc = pc
-        self.dT = dT
         self.z = z
         self.t = t
 
@@ -195,51 +194,51 @@ class Stallman:
         '''
         c = (np.pi * self.pc) / (self.k * self.tau)
         d = (q * self.PwCw) / (2 * self.k)
-        self.a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
-        self.b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
-        return self.a, self.b
+        a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
+        b = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 - ((d ** 2) / 2)) ** 0.5
+        return a, b
 
-    def equation(self):
+    def equation(self, a, b):
         r'''
-        The Stallman (1965) heat transport equation
+        The Stallman (1965) heat transport equation rearranged for amplitude ratio
 
+        Args:
 
-        :return: An amplitude at z
+        :param a: constant a
+        :param b: constant b
+        :return: amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
 
         This is computed using the equation:
 
         .. math::
-            T-T_o = \Delta T \cdot e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
+            Ar = e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
 
         '''
-        return self.dT * np.exp(-self.a * self.z) * np.sin(((2 * np.pi * self.t) / self.tau) - self.b * self.z)
+        return np.exp(-a * self.z) * np.sin(((2 * np.pi * self.t) / self.tau) - b * self.z)
 
-    def objective(self, q, dTz):
+    def objective(self, q, Ar):
         '''
-        Objective function to calculate absolute error between observed and modelled amplitude
+        Objective function to calculate absolute error between observed and modelled amplitude ratio
 
         Args:
         :param q: groundwater flux positive downwards (m/s)
-        :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
+        :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: The absolute error between modelled and observed dTz
         '''
-        constants = self.constants(q)
-        evaluation = self.equation()
-        evaluation = np.concatenate((evaluation, evaluation, evaluation))
-        t = np.linspace(0, 3 * self.tau, int(3 * len(self.t)))
-        modelled_amp = amplitude(t, evaluation, period=int(self.tau))[3]
-        ae = np.abs(dTz - modelled_amp)
+        a, b = self.constants(q)
+        evaluation = self.equation(a, b)
+        ae = (np.abs(Ar - evaluation)).sum()
         return ae
 
-    def optimise(self, dTz):
+    def optimise(self, Ar):
         '''
         Optimisation function to calculate the flux which minimises the result of the objective function.
 
         Args:
-        :param dTz: The observed amplitude of the oscillation at z (C) see signal._filter for help extracting amplitude
-        :return: An estimate of the optimal flux
+        :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
+        :return: An estimate of the optimal flux (m/s positive downwards)
         '''
-        result = optimize.minimize(self.objective, (0.00001), (dTz), tol=1e-50, method="Nelder-Mead",
+        result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
                                    options={'maxiter': 1000})
         return result
 
