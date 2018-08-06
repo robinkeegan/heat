@@ -18,8 +18,5 @@ python setup.py install
 ```
 
 ## Future Directions and Todo
-1. Build a general model class for implementing models 
-2. Add somee finite difference models
-3. Other models maybe FAST, Hatch, Keery etc.
-4. Implement a more robust amplitude extraction algorithm
-5. Add some tests
+1. Implement a more robust amplitude extraction algorithm
+2. Add some tests
