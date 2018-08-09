@@ -6,11 +6,11 @@
 4. Add the path of your scripts to the conf.py file:
 ```python
 import sys
-sys.path.append('../../mylib/')
+sys.path.append('../../heat/')
 ```
 5. In terminal run `make html`
 6. Open and view the html `open build/html/index.html`
-7. To run the auto doc go `sphinx-apidoc -o source/ ../mylib` where source is where the .rst file is stored and mylib is my library
+7. To run the auto doc go `sphinx-apidoc -o source/ ../heat` where source is where the .rst file is stored and mylib is my library
 8. Remake the html and open to view it. It may be necessary to add the modules.rst file as a line modules in the Toc of index.rst:
 ```python
 

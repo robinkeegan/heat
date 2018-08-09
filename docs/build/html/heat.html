@@ -1,0 +1,1019 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>heat package &#8212; heat 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="heat" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="heat"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">heat 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">heat</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="heat-package">
+<h1>heat package<a class="headerlink" href="#heat-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-heat.heat_transport">
+<span id="heat-heat-transport-module"></span><h2>heat.heat_transport module<a class="headerlink" href="#module-heat.heat_transport" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="heat.heat_transport.BP">
+<em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">BP</code><span class="sig-paren">(</span><em>PwCw</em>, <em>L</em>, <em>k</em>, <em>To</em>, <em>Tl</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates the Bredehoeft and Papaopulos (1965) solution model class</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>z</strong> – depth (m)</li>
+<li><strong>L</strong> – maximum depth (m)</li>
+<li><strong>To</strong> – temperature at z = 0 (C)</li>
+<li><strong>Tl</strong> – temperature at z = L (C)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>k</strong> – thermal conductivity (W/m/C)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="heat.heat_transport.BP.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>q</strong> – groundwater flux positive downwards (m/s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Temperature at z</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li>z = depth (m)</li>
+<li>L = maximum depth (m)</li>
+<li>To = temperature at z = 0 (C)</li>
+<li>Tl = temperature at z = L (C)</li>
+<li>q = q in the z direction (m/s)</li>
+<li>PwCw = volumetric heat capacity of water (J/m3C)</li>
+<li>k = thermal conductivity (W/m/C)</li>
+</ul>
+<p>and:</p>
+<div class="math notranslate nohighlight">
+\[Ph = \frac{PwCwqzwL}{k}\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.BP.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>An objective function which calculates the absolute error between a modelled and observed profile for a flux         estimate.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>T</strong> – temperature at z (C)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">absolute error between modelled T(z) and observed T at z.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.BP.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.optimise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.optimise" title="Permalink to this definition">¶</a></dt>
+<dd><p>When q is unknown this function will estimate optimal q value for a given profile.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>T</strong> – temperature at z (C)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an estimate of q</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.BP.solution">
+<code class="descname">solution</code><span class="sig-paren">(</span><em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.solution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve analytically for q at z = 0.5 L.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>T</strong> – temperature at z (C)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">q at z = 0.5 L</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with:</p>
+<p>When</p>
+<div class="math notranslate nohighlight">
+\[\frac{z}{L} = 0.5\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} &gt; 0\]</div>
+<p>q can be solved with:</p>
+<div class="math notranslate nohighlight">
+\[q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}\]</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="heat.heat_transport.HatchAmplitude">
+<em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">HatchAmplitude</code><span class="sig-paren">(</span><em>pc</em>, <em>PwCw</em>, <em>Ke</em>, <em>dz</em>, <em>ne</em>, <em>tau</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#HatchAmplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.HatchAmplitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Hatch amplitude ratio method.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pc</strong> – The bulk volumetric heat capacity of the saturated medium (J/m3C)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>Ke</strong> – The effective thermal diffusivity (W/m C)</li>
+<li><strong>dz</strong> – Distance between sensors (m)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>tau</strong> – the period of oscillation (s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an instance of the Hatch amplitude class</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="heat.heat_transport.HatchAmplitude.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#HatchAmplitude.equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.HatchAmplitude.equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Hatch amplitude method calculating amplitude as a function of depth and flux:</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>q</strong> – groundwater flux positive downwards (m/s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The amplitude ratio for a given flux and depth.</td>
+</tr>
+</tbody>
+</table>
+<div class="math notranslate nohighlight">
+\[A_r = exp \Bigg( \frac{\Delta z}{2 \dot K_e} \Big( v - \sqrt{\frac{a + v^2}{2}} \Big) \Bigg)\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.HatchAmplitude.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>Ar</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#HatchAmplitude.objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.HatchAmplitude.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objective function to find the absolute error between calculated and observed amplitudes.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>Ar</strong> – observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the absolute error between the modelled and observed amplitudes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.HatchAmplitude.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><em>Ar</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#HatchAmplitude.optimise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.HatchAmplitude.optimise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimisation function to return the q value which minimises the difference between the observed and calculated         amplitudes.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Ar</strong> – observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The optimal q value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="heat.heat_transport.NumericalTransport">
+<em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">NumericalTransport</code><span class="sig-paren">(</span><em>z</em>, <em>dt</em>, <em>PwCw</em>, <em>pc</em>, <em>Ke</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Numerical model class</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> – The spacing between each temperature in the array (m).</li>
+<li><strong>dt</strong> – The time step (s) for help choosing a stable time step</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3 C)</li>
+<li><strong>pc</strong> – The bulk volumetric heat capacity of the saturated medium (J/m3C)</li>
+<li><strong>Ke</strong> – The effective thermal conductivity (W/m C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An instance of the NumericalTransport class.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>q</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Governing heat transport equation:</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>T</strong> – initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A finite difference implementation of the Diffusion Advection equation:</p>
+<div class="math notranslate nohighlight">
+\[T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.max_timestep">
+<code class="descname">max_timestep</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.max_timestep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.max_timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum stable time step calculated with the equation:</p>
+<div class="math notranslate nohighlight">
+\[\Delta T \leq \frac{z^2}{2 \cdot K_e}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The maximum time step (s)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.model">
+<code class="descname">model</code><span class="sig-paren">(</span><em>q</em>, <em>T</em>, <em>n_iterations</em>, <em>top_bc</em>, <em>bot_bc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a finite difference model based on initial conditions and boundary conditions and returns the final         profile and the profile at all timesteps.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>T</strong> – initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</li>
+<li><strong>n_iterations</strong> – The number of iterations to run the model (integer)</li>
+<li><strong>top_bc</strong> – An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>bot_bc</strong> – An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list containing the final temperature depth profile as item zero and a dataframe of the temperature         profiles at each time step as the second element. If the iterations are to many it may be better to use the         method “model2” which only returns the temperature profile at the final time step.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.model2">
+<code class="descname">model2</code><span class="sig-paren">(</span><em>q</em>, <em>T</em>, <em>n_iterations</em>, <em>top_bc</em>, <em>bot_bc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.model2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.model2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a finite difference model based on initial conditions and boundary conditions and returns the final         profile. This is faster and uses less ram.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>T</strong> – initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</li>
+<li><strong>n_iterations</strong> – The number of iterations to run the model (integer)</li>
+<li><strong>top_bc</strong> – An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>bot_bc</strong> – An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The final temperature depth profile.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>T</em>, <em>n_iterations</em>, <em>top_bc</em>, <em>bot_bc</em>, <em>observed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objective method returns the error between an observed and measured 2d array (including boundary conditions).</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>T</strong> – initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</li>
+<li><strong>n_iterations</strong> – The number of iterations to run the model (integer)</li>
+<li><strong>top_bc</strong> – An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>bot_bc</strong> – An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>observed</strong> – A 2d observed array for all time steps (including the boundary conditions).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The absolute error between the observed and modelled profiles</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.NumericalTransport.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><em>T</em>, <em>n_iterations</em>, <em>top_bc</em>, <em>bot_bc</em>, <em>observed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#NumericalTransport.optimise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.NumericalTransport.optimise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimisation method returns an optimal estimaate of q. Note for big models it may be necessary to change the         “maxiter” option in the “optimise.minimise” function.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> – initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</li>
+<li><strong>n_iterations</strong> – The number of iterations to run the model (integer)</li>
+<li><strong>top_bc</strong> – An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>bot_bc</strong> – An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</li>
+<li><strong>observed</strong> – A 2d observed array for all time steps (including the boundary conditions).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An estimate of the groundwater flux.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="heat.heat_transport.Stallman">
+<em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">Stallman</code><span class="sig-paren">(</span><em>PwCw</em>, <em>tau</em>, <em>K</em>, <em>ne</em>, <em>pc</em>, <em>z</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#Stallman"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.Stallman" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Stallman model class</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>PwCw</strong> – Volumetric heat capacity of water (J/m3 C)</li>
+<li><strong>tau</strong> – Period of oscillation (s)</li>
+<li><strong>K</strong> – The effective thermal conductivity (W/m C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>pc</strong> – The bulk volumetric heat capacity of the saturated medium (J/m3C)</li>
+<li><strong>z</strong> – Positive depth below surface where z &gt; 0 and z &lt; infinity.</li>
+<li><strong>t</strong> – Time/s for evaluation can be a value or a numpy array (s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an instance of the Stallman class</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="heat.heat_transport.Stallman.constants">
+<code class="descname">constants</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#Stallman.constants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.Stallman.constants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stallman Constants for the Stallman (1965) Heat Transport equation</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>q</strong> – groundwater flux positive downwards (m/s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list with the stallman constants a and b as the zeroth and first elements.</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equations:</p>
+<div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+<div class="math notranslate nohighlight">
+\[C = \frac{\pi \cdot pc}{k \cdot T}\]</div>
+<div class="math notranslate nohighlight">
+\[D = \frac{-q \cdot C_wP_w}{2 \cdot k}\]</div>
+<p>and A and B are constants calculated from C &amp; D via the following equations:</p>
+<div class="math notranslate nohighlight">
+\[a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D\]</div>
+<div class="math notranslate nohighlight">
+\[b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.Stallman.equation">
+<code class="descname">equation</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#Stallman.equation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.Stallman.equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Stallman (1965) heat transport equation arranged for amplitude ratio</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> – constant a</li>
+<li><strong>b</strong> – constant b</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[Ar = e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.Stallman.objective">
+<code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>Ar</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#Stallman.objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.Stallman.objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objective function to calculate absolute error between observed and modelled amplitude ratio</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – groundwater flux positive downwards (m/s)</li>
+<li><strong>Ar</strong> – The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The absolute error between modelled and observed dTz</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.Stallman.optimise">
+<code class="descname">optimise</code><span class="sig-paren">(</span><em>Ar</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#Stallman.optimise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.Stallman.optimise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimisation function to calculate the flux which minimises the result of the objective function.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Ar</strong> – The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An estimate of the optimal flux (m/s positive downwards)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="heat.heat_transport.TurcotteSchubert">
+<em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">TurcotteSchubert</code><span class="sig-paren">(</span><em>Tl</em>, <em>To</em>, <em>PwCw</em>, <em>k</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#TurcotteSchubert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.TurcotteSchubert" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling    it is unclear what direction q is positive in.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>Tl</strong> – The temperature at L where L is a depth where dT/dz = 0</li>
+<li><strong>To</strong> – The temperature at z = 0</li>
+<li><strong>PwCw</strong> – The volumetric heat capacity of water (J/m3C)</li>
+<li><strong>k</strong> – The thermal conductivity (W/m/C)</li>
+<li><strong>z</strong> – The depth (m)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="heat.heat_transport.TurcotteSchubert.q">
+<code class="descname">q</code><span class="sig-paren">(</span><em>Tz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#TurcotteSchubert.q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.TurcotteSchubert.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the flux values.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Tz</strong> – The temperature at z (C)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The groundwater flux in m/s</td>
+</tr>
+</tbody>
+</table>
+<div class="math notranslate nohighlight">
+\[\frac{-k}{\rho_w c_w \cdot z} \cdot \log{\Big(\frac{T_z-T_l}{T_o - T_l}\Big)}\]</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="heat.heat_transport.TurcotteSchubert.tz">
+<code class="descname">tz</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#TurcotteSchubert.tz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.TurcotteSchubert.tz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the temperature at an arbitrary depth.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>q</strong> – groundwater flux positive downwards (m/s)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">temperature at z</td>
+</tr>
+</tbody>
+</table>
+<p>Computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[T_z = (T_o - T_l) \cdot e^{\frac{- q \cdot \rho _w c_w \cdot z}{k}} + T_l\]</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.heat_transport.briggs_extinction_depth">
+<code class="descclassname">heat.heat_transport.</code><code class="descname">briggs_extinction_depth</code><span class="sig-paren">(</span><em>K</em>, <em>Am</em>, <em>Ao</em>, <em>a</em>, <em>vt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#briggs_extinction_depth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.briggs_extinction_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>K</strong> – effective thermal conductivity (W/m C)</li>
+<li><strong>Am</strong> – minimum detectable amplitude for sensor precision (C)</li>
+<li><strong>Ao</strong> – amplitude of the signal at surface (C)</li>
+<li><strong>a</strong> – Hatch alpha term (see hydro_funcs)</li>
+<li><strong>vt</strong> – thermal front velocity (see hydro_funcs)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Ze the extinction depth at which amplitude oscillations will be undetectable to a sensor of finite precision</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[Z_e = 2 \cdot K_e (\frac{\ln(A_{min}/A_{z=0})}{v_t - \sqrt{a + v_t^2 / 2}})\]</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-heat.hydro_funcs">
+<span id="heat-hydro-funcs-module"></span><h2>heat.hydro_funcs module<a class="headerlink" href="#module-heat.hydro_funcs" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="heat.hydro_funcs.hatch_alpha">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">hatch_alpha</code><span class="sig-paren">(</span><em>vt</em>, <em>ke</em>, <em>tau</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#hatch_alpha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.hatch_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vt</strong> – vt the thermal front velocity</li>
+<li><strong>ke</strong> – ke the effective thermal conductivity (W/m C)</li>
+<li><strong>tau</strong> – period of oscillation (s)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a Hatch Alpha</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.ke_">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">ke_</code><span class="sig-paren">(</span><em>Kw</em>, <em>Ks</em>, <em>ne</em>, <em>pc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#ke_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.ke_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Effective thermal diffusivity</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Kw</strong> – thermal conductivity of water (W/m C)</li>
+<li><strong>Ks</strong> – thermal conductivity of solids (W/m C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>pc</strong> – bulk volumetric heat capacity of a saturated medium (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ke the effective thermal conductivity (W/m C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.ke_full">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">ke_full</code><span class="sig-paren">(</span><em>Kw</em>, <em>Ks</em>, <em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#ke_full"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.ke_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>The effective thermal diffusivity without intermediately calculating bulk volumetric heat capacity of a saturated medium</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Kw</strong> – thermal conductivity of water (W/m C)</li>
+<li><strong>Ks</strong> – thermal conductivity of solids (W/m C)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ke the effective thermal conductivity (W/m C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equations:</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+<div class="math notranslate nohighlight">
+\[k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}\]</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.pc_">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">pc_</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#pc_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.pc_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bulk volumetric heat capacity of a saturated medium</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pc the bulk volumetric heat capacity of the saturated medium (J/m3C)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed using the equation:</p>
+<div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.peclet">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">peclet</code><span class="sig-paren">(</span><em>PwCw</em>, <em>q</em>, <em>L</em>, <em>ke</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#peclet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.peclet" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Peclet number for heat transport. Note when Peclet number &lt; 0.5 dispersivity can be neglected (Rau et al. 2012).</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>q</strong> – groundwater flux (m/s, positive upward)</li>
+<li><strong>L</strong> – length of flow path (m)</li>
+<li><strong>ke</strong> – effective thermal conductivity (W/m C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Ph the Peclet number for heat flow</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[Ph = \frac{P_wC_w \cdot q \cdot L}{k_e}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.vs_">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">vs_</code><span class="sig-paren">(</span><em>q</em>, <em>ne</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#vs_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.vs_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solute Front Velocity</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – flux (m/s, positive downward)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vs the solute front velocity (m/s)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[v_s = \frac{q}{n_w}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.vt_">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">vt_</code><span class="sig-paren">(</span><em>PwCw</em>, <em>vs</em>, <em>ne</em>, <em>pc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#vt_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.vt_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermal Front Velocity</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>vs</strong> – solute front velocity (m/s)</li>
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>pc</strong> – bulk volumetric heat capacity of a saturated medium (J/m3C)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vt the thermal front velocity</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equation:</p>
+<div class="math notranslate nohighlight">
+\[v_t = v_s \cdot \frac{P_wC_w}{pc}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.hydro_funcs.vt_full">
+<code class="descclassname">heat.hydro_funcs.</code><code class="descname">vt_full</code><span class="sig-paren">(</span><em>ne</em>, <em>PwCw</em>, <em>PsCs</em>, <em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/hydro_funcs.html#vt_full"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.hydro_funcs.vt_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the thermal front velocity without intermediately calculating the solute front velocity and bulk volumetric heat capacity of the saturated medium.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ne</strong> – effective porosity (unit-less)</li>
+<li><strong>PwCw</strong> – volumetric heat capacity of water (J/m3C)</li>
+<li><strong>PsCs</strong> – volumetric heat capacity of solid (J/m3C)</li>
+<li><strong>q</strong> – flux (m/s, positive downward)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vt the thermal front velocity</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is computed with the equations:</p>
+<div class="math notranslate nohighlight">
+\[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
+<div class="math notranslate nohighlight">
+\[v_s = \frac{q}{n_w}\]</div>
+<div class="math notranslate nohighlight">
+\[v_t = v_s \cdot \frac{P_wC_w}{pc}\]</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-heat.signal">
+<span id="heat-signal-module"></span><h2>heat.signal module<a class="headerlink" href="#module-heat.signal" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="heat.signal.amplitude">
+<code class="descclassname">heat.signal.</code><code class="descname">amplitude</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>period=24</em>, <em>tol=0.5</em>, <em>nout=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/signal.html#amplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.signal.amplitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the amplitude amplitude from a time-series using the lombscargle method.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – time component</li>
+<li><strong>y</strong> – the wave at each time-step</li>
+<li><strong>period</strong> – the period of one oscillation</li>
+<li><strong>tol</strong> – how far above and below the period to compute the periodigram default = 0.5 * period</li>
+<li><strong>nout</strong> – number of periods to output</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Periods, the associated amplitudes for each period, the index of the max amplitude and the max amplitude.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.signal.get_amp">
+<code class="descclassname">heat.signal.</code><code class="descname">get_amp</code><span class="sig-paren">(</span><em>array</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/signal.html#get_amp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.signal.get_amp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applys the amplitude function to get amean amplitude over a 7 day period.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>array</strong> – array of an hourly time series</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mean amplitude for each 7 day period</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.signal.min_max_amplitude">
+<code class="descclassname">heat.signal.</code><code class="descname">min_max_amplitude</code><span class="sig-paren">(</span><em>series</em>, <em>tau=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/signal.html#min_max_amplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.signal.min_max_amplitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Min max peak picking amplitude method.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>series</strong> – a time series</li>
+<li><strong>tau</strong> – the period of one oscillation as a length along the array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An array of amplitudes for each period.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="heat.signal.phase_offset">
+<code class="descclassname">heat.signal.</code><code class="descname">phase_offset</code><span class="sig-paren">(</span><em>y1</em>, <em>y2</em>, <em>period=24</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/signal.html#phase_offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.signal.phase_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the lag or offset between time-series y1 and y2 using cross-correlation.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>y1</strong> – Time series 1</li>
+<li><strong>y2</strong> – Time series 2</li>
+<li><strong>period</strong> – The period of one oscillation default = 24</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the lag between time series 1 and 2, and the index of the max correlation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-heat">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-heat" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">heat package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-heat.heat_transport">heat.heat_transport module</a></li>
+<li><a class="reference internal" href="#module-heat.hydro_funcs">heat.hydro_funcs module</a></li>
+<li><a class="reference internal" href="#module-heat.signal">heat.signal module</a></li>
+<li><a class="reference internal" href="#module-heat">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">heat</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/heat.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="heat"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">heat 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >heat</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Robin Keegan-Treloar.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>

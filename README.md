@@ -1,4 +1,4 @@
-# mylib
+# heat
 
 A collection of useful functions written in the Python Programming Language. The library is primarily focused on groundwater modelling.
 
@@ -12,8 +12,8 @@ Currently the collection includes:
 ## To install
 
 ```bash
-git clone https://github.com/robinkeegan/mylib
-cd mylib
+git clone https://github.com/robinkeegan/heat
+cd heat
 python setup.py install
 ```
 

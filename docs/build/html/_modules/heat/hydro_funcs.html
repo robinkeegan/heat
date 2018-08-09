@@ -1,0 +1,263 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>heat.hydro_funcs &#8212; heat 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">heat 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for heat.hydro_funcs</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="pc_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.pc_">[docs]</a><span class="k">def</span> <span class="nf">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">    Bulk volumetric heat capacity of a saturated medium</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
+<span class="sd">    :param PsCs: volumetric heat capacity of solid (J/m3C)</span>
+<span class="sd">    :return: pc the bulk volumetric heat capacity of the saturated medium (J/m3C)</span>
+
+<span class="sd">    This is computed using the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">ne</span> <span class="o">*</span> <span class="n">PwCw</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">ne</span><span class="p">)</span> <span class="o">*</span> <span class="n">PsCs</span></div>
+
+
+<div class="viewcode-block" id="vs_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vs_">[docs]</a><span class="k">def</span> <span class="nf">vs_</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ne</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Solute Front Velocity</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param q: flux (m/s, positive downward)</span>
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :return: vs the solute front velocity (m/s)</span>
+
+<span class="sd">    This is computed with the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        v_s = \frac{q}{n_w}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">q</span> <span class="o">/</span> <span class="n">ne</span></div>
+
+
+<div class="viewcode-block" id="vt_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vt_">[docs]</a><span class="k">def</span> <span class="nf">vt_</span><span class="p">(</span><span class="n">PwCw</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Thermal Front Velocity</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
+<span class="sd">    :param vs: solute front velocity (m/s)</span>
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :param pc: bulk volumetric heat capacity of a saturated medium (J/m3C)</span>
+<span class="sd">    :return: vt the thermal front velocity</span>
+
+<span class="sd">    This is computed with the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        v_t = v_s \cdot \frac{P_wC_w}{pc}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">vs</span> <span class="o">*</span> <span class="p">(</span><span class="n">PwCw</span><span class="o">/</span><span class="n">pc</span><span class="p">)</span> <span class="o">*</span> <span class="n">ne</span></div>
+
+
+<div class="viewcode-block" id="vt_full"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vt_full">[docs]</a><span class="k">def</span> <span class="nf">vt_full</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the thermal front velocity without intermediately calculating the solute front velocity and bulk \</span>
+<span class="sd">    volumetric heat capacity of the saturated medium.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
+<span class="sd">    :param PsCs: volumetric heat capacity of solid (J/m3C)</span>
+<span class="sd">    :param q: flux (m/s, positive downward)</span>
+<span class="sd">    :return: vt the thermal front velocity</span>
+
+<span class="sd">    This is computed with the equations:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        v_s = \frac{q}{n_w}</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        v_t = v_s \cdot \frac{P_wC_w}{pc}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="n">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">)</span>
+    <span class="n">vs</span> <span class="o">=</span> <span class="n">vs_</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ne</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vs</span> <span class="o">*</span> <span class="p">(</span><span class="n">PwCw</span><span class="o">/</span><span class="n">pc</span><span class="p">)</span> <span class="o">*</span> <span class="n">ne</span></div>
+
+
+<div class="viewcode-block" id="ke_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.ke_">[docs]</a><span class="k">def</span> <span class="nf">ke_</span><span class="p">(</span><span class="n">Kw</span><span class="p">,</span> <span class="n">Ks</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Effective thermal diffusivity</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param Kw: thermal conductivity of water (W/m C)</span>
+<span class="sd">    :param Ks: thermal conductivity of solids (W/m C)</span>
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :param pc: bulk volumetric heat capacity of a saturated medium (J/m3C)</span>
+<span class="sd">    :return: ke the effective thermal conductivity (W/m C)</span>
+
+<span class="sd">    This is computed with the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Kw</span> <span class="o">**</span> <span class="n">ne</span> <span class="o">*</span> <span class="n">Ks</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ne</span><span class="p">))</span><span class="o">/</span><span class="n">pc</span></div>
+
+
+<div class="viewcode-block" id="ke_full"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.ke_full">[docs]</a><span class="k">def</span> <span class="nf">ke_full</span><span class="p">(</span><span class="n">Kw</span><span class="p">,</span> <span class="n">Ks</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The effective thermal diffusivity without intermediately calculating bulk volumetric heat capacity of a \</span>
+<span class="sd">    saturated medium</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param Kw: thermal conductivity of water (W/m C)</span>
+<span class="sd">    :param Ks: thermal conductivity of solids (W/m C)</span>
+<span class="sd">    :param ne: effective porosity (unit-less)</span>
+<span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
+<span class="sd">    :param PsCs: volumetric heat capacity of solid (J/m3C)</span>
+<span class="sd">    :return: ke the effective thermal conductivity (W/m C)</span>
+
+<span class="sd">    This is computed with the equations:</span>
+
+<span class="sd">     .. math::</span>
+<span class="sd">        pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s</span>
+
+<span class="sd">     .. math::</span>
+<span class="sd">        k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="n">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Kw</span><span class="o">**</span><span class="n">ne</span> <span class="o">*</span> <span class="n">Ks</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span><span class="n">ne</span><span class="p">))</span><span class="o">/</span><span class="n">pc</span></div>
+
+
+<div class="viewcode-block" id="peclet"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.peclet">[docs]</a><span class="k">def</span> <span class="nf">peclet</span><span class="p">(</span><span class="n">PwCw</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">ke</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The Peclet number for heat transport. Note when Peclet number &lt; 0.5 dispersivity can be neglected (Rau et al. 2012).</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
+<span class="sd">    :param q: groundwater flux (m/s, positive upward)</span>
+<span class="sd">    :param L: length of flow path (m)</span>
+<span class="sd">    :param ke: effective thermal conductivity (W/m C)</span>
+<span class="sd">    :return: Ph the Peclet number for heat flow</span>
+
+<span class="sd">    This is computed with the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        Ph = \frac{P_wC_w \cdot q \cdot L}{k_e}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="n">ke</span></div>
+
+
+<div class="viewcode-block" id="hatch_alpha"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.hatch_alpha">[docs]</a><span class="k">def</span> <span class="nf">hatch_alpha</span><span class="p">(</span><span class="n">vt</span><span class="p">,</span> <span class="n">ke</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.</span>
+
+<span class="sd">    Args:</span>
+
+<span class="sd">    :param vt: vt the thermal front velocity</span>
+<span class="sd">    :param ke: ke the effective thermal conductivity (W/m C)</span>
+<span class="sd">    :param tau: period of oscillation (s)</span>
+<span class="sd">    :return: a Hatch Alpha</span>
+
+<span class="sd">    This is computed with the equation:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">vt</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ke</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.5</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">heat 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Robin Keegan-Treloar.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>

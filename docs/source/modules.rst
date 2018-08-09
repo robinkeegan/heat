@@ -1,7 +1,7 @@
-mylib
-=====
+heat
+====
 
 .. toctree::
    :maxdepth: 4
 
-   mylib
+   heat

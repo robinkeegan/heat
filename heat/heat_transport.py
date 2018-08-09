@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import optimize
-from mylib.hydro_funcs import vt_, vs_, hatch_alpha
+from heat.hydro_funcs import vt_, vs_, hatch_alpha
 import pandas as pd
 
 
@@ -84,8 +84,8 @@ class BP:
         :return: an estimate of q
 
         '''
-        result = optimize.minimize(self.objective, (0.00001),(T),tol=1e-50, method="Nelder-Mead",
-                                   options= {'maxiter': 1000})
+        result = optimize.minimize(self.objective, (0.00001), (T), tol=1e-50, method="Nelder-Mead",
+                                   options={'maxiter': 1000})
         return result
 
     def solution(self, T):
