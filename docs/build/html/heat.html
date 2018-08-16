@@ -108,7 +108,7 @@
 <dl class="method">
 <dt id="heat.heat_transport.BP.objective">
 <code class="descname">objective</code><span class="sig-paren">(</span><em>q</em>, <em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.objective" title="Permalink to this definition">¶</a></dt>
-<dd><p>An objective function which calculates the absolute error between a modelled and observed profile for a flux         estimate.</p>
+<dd><p>An objective function which calculates the absolute error between a         modelled and observed profile for a flux estimate.</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -125,7 +125,7 @@
 <dl class="method">
 <dt id="heat.heat_transport.BP.optimise">
 <code class="descname">optimise</code><span class="sig-paren">(</span><em>T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#BP.optimise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.BP.optimise" title="Permalink to this definition">¶</a></dt>
-<dd><p>When q is unknown this function will estimate optimal q value for a given profile.</p>
+<dd><p>When q is unknown this function will estimate optimal q value for a         given profile.</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -539,7 +539,7 @@
 <dl class="class">
 <dt id="heat.heat_transport.TurcotteSchubert">
 <em class="property">class </em><code class="descclassname">heat.heat_transport.</code><code class="descname">TurcotteSchubert</code><span class="sig-paren">(</span><em>Tl</em>, <em>To</em>, <em>PwCw</em>, <em>k</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/heat_transport.html#TurcotteSchubert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.heat_transport.TurcotteSchubert" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling    it is unclear what direction q is positive in.</p>
+<dd><p>The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling it is unclear what direction q is positive in.</p>
 <p>Args:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -729,11 +729,12 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pc the bulk volumetric heat capacity of the saturated medium (J/m3C)</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">pc the bulk volumetric heat capacity of the saturated medium </p>
 </td>
 </tr>
 </tbody>
 </table>
+<p>(J/m3C)</p>
 <p>This is computed using the equation:</p>
 <div class="math notranslate nohighlight">
 \[pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s\]</div>
@@ -940,6 +941,32 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-heat.uncertainty">
+<span id="heat-uncertainty-module"></span><h2>heat.uncertainty module<a class="headerlink" href="#module-heat.uncertainty" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="heat.uncertainty.mc">
+<code class="descclassname">heat.uncertainty.</code><code class="descname">mc</code><span class="sig-paren">(</span><em>x1</em>, <em>x2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/heat/uncertainty.html#mc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#heat.uncertainty.mc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find all posible combinations of two ranges.</p>
+<p>Args:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> – Upper and lower intervals for paramter x1 as list.</li>
+<li><strong>x2</strong> – Upper and lower intervals for paramter x2 as list.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A two dimensional list of all possible combinations of two </p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>ranges.</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-heat">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-heat" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -958,6 +985,7 @@
 <li><a class="reference internal" href="#module-heat.heat_transport">heat.heat_transport module</a></li>
 <li><a class="reference internal" href="#module-heat.hydro_funcs">heat.hydro_funcs module</a></li>
 <li><a class="reference internal" href="#module-heat.signal">heat.signal module</a></li>
+<li><a class="reference internal" href="#module-heat.uncertainty">heat.uncertainty module</a></li>
 <li><a class="reference internal" href="#module-heat">Module contents</a></li>
 </ul>
 </li>

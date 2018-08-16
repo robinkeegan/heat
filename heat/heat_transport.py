@@ -58,7 +58,7 @@ class BP:
 
 
         """
-        Ph = -(self.PwCw * q * self.L) / self.k
+        Ph = (self.PwCw * q * self.L) / self.k
         t_z = self.To + (self.Tl - self.To) * \
             ((np.exp(Ph * self.z / self.L) - 1) / (np.exp(Ph)-1))
         return t_z
@@ -99,7 +99,7 @@ class BP:
 
         Args:
 
-        :param T: temperature at z (C)
+        :param T: temperature at z = 0.5L (C)
         :return: q at z = 0.5 L
 
         This is computed with:
@@ -121,7 +121,7 @@ class BP:
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
 
         """
-        return self.k * np.log((self.Tl ** 2 - 2.0 * self.Tl * self.Tz + self.Tz ** 2) / (self.To ** 2 - 2.0 * self.To * self.Tz + T ** 2)) / (self.L * self.PwCw)
+        return self.k * np.log((self.Tl ** 2 - 2.0 * self.Tl * T + T ** 2) / (self.To ** 2 - 2.0 * self.To * T + T ** 2)) / (self.L * self.PwCw)
 
 
 class TurcotteSchubert:

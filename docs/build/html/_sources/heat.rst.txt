@@ -28,6 +28,14 @@ heat.signal module
     :undoc-members:
     :show-inheritance:
 
+heat.uncertainty module
+-----------------------
+
+.. automodule:: heat.uncertainty
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

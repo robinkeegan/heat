@@ -41,7 +41,7 @@
 
 
 <div class="viewcode-block" id="pc_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.pc_">[docs]</a><span class="k">def</span> <span class="nf">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Bulk volumetric heat capacity of a saturated medium</span>
 
@@ -50,19 +50,21 @@
 <span class="sd">    :param ne: effective porosity (unit-less)</span>
 <span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
 <span class="sd">    :param PsCs: volumetric heat capacity of solid (J/m3C)</span>
-<span class="sd">    :return: pc the bulk volumetric heat capacity of the saturated medium (J/m3C)</span>
+<span class="sd">    :return: pc the bulk volumetric heat capacity of the saturated medium \</span>
+<span class="sd">    (J/m3C)</span>
 
 <span class="sd">    This is computed using the equation:</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">        pc = n_e \cdot P_wC_w + (1 - n_e) \cdot P_sC_s</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="n">ne</span> <span class="o">*</span> <span class="n">PwCw</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">ne</span><span class="p">)</span> <span class="o">*</span> <span class="n">PsCs</span></div>
 
 
 <div class="viewcode-block" id="vs_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vs_">[docs]</a><span class="k">def</span> <span class="nf">vs_</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ne</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solute Front Velocity</span>
 
 <span class="sd">    Args:</span>
@@ -76,12 +78,12 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        v_s = \frac{q}{n_w}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">q</span> <span class="o">/</span> <span class="n">ne</span></div>
 
 
 <div class="viewcode-block" id="vt_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vt_">[docs]</a><span class="k">def</span> <span class="nf">vt_</span><span class="p">(</span><span class="n">PwCw</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Thermal Front Velocity</span>
 
 <span class="sd">    Args:</span>
@@ -97,14 +99,15 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        v_t = v_s \cdot \frac{P_wC_w}{pc}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">vs</span> <span class="o">*</span> <span class="p">(</span><span class="n">PwCw</span><span class="o">/</span><span class="n">pc</span><span class="p">)</span> <span class="o">*</span> <span class="n">ne</span></div>
 
 
 <div class="viewcode-block" id="vt_full"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.vt_full">[docs]</a><span class="k">def</span> <span class="nf">vt_full</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Calculate the thermal front velocity without intermediately calculating the solute front velocity and bulk \</span>
-<span class="sd">    volumetric heat capacity of the saturated medium.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the thermal front velocity without intermediately calculating \</span>
+<span class="sd">    the solute front velocity and bulk volumetric heat capacity of the \</span>
+<span class="sd">    saturated medium.</span>
 
 <span class="sd">    Args:</span>
 
@@ -125,14 +128,14 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        v_t = v_s \cdot \frac{P_wC_w}{pc}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pc</span> <span class="o">=</span> <span class="n">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">)</span>
     <span class="n">vs</span> <span class="o">=</span> <span class="n">vs_</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">ne</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">vs</span> <span class="o">*</span> <span class="p">(</span><span class="n">PwCw</span><span class="o">/</span><span class="n">pc</span><span class="p">)</span> <span class="o">*</span> <span class="n">ne</span></div>
 
 
 <div class="viewcode-block" id="ke_"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.ke_">[docs]</a><span class="k">def</span> <span class="nf">ke_</span><span class="p">(</span><span class="n">Kw</span><span class="p">,</span> <span class="n">Ks</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Effective thermal diffusivity</span>
 
 <span class="sd">    Args:</span>
@@ -148,14 +151,14 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">Kw</span> <span class="o">**</span> <span class="n">ne</span> <span class="o">*</span> <span class="n">Ks</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ne</span><span class="p">))</span><span class="o">/</span><span class="n">pc</span></div>
 
 
 <div class="viewcode-block" id="ke_full"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.ke_full">[docs]</a><span class="k">def</span> <span class="nf">ke_full</span><span class="p">(</span><span class="n">Kw</span><span class="p">,</span> <span class="n">Ks</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    The effective thermal diffusivity without intermediately calculating bulk volumetric heat capacity of a \</span>
-<span class="sd">    saturated medium</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The effective thermal diffusivity without intermediately calculating bulk \</span>
+<span class="sd">    volumetric heat capacity of a saturated medium</span>
 
 <span class="sd">    Args:</span>
 
@@ -174,14 +177,15 @@
 <span class="sd">     .. math::</span>
 <span class="sd">        k_e = \frac{k_w^{ne} \cdot k_s ^{(1-ne)}}{pc}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pc</span> <span class="o">=</span> <span class="n">pc_</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">PsCs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">Kw</span><span class="o">**</span><span class="n">ne</span> <span class="o">*</span> <span class="n">Ks</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span><span class="n">ne</span><span class="p">))</span><span class="o">/</span><span class="n">pc</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">Kw</span><span class="o">**</span><span class="n">ne</span> <span class="o">*</span> <span class="n">Ks</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ne</span><span class="p">))</span><span class="o">/</span><span class="n">pc</span></div>
 
 
 <div class="viewcode-block" id="peclet"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.peclet">[docs]</a><span class="k">def</span> <span class="nf">peclet</span><span class="p">(</span><span class="n">PwCw</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">ke</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    The Peclet number for heat transport. Note when Peclet number &lt; 0.5 dispersivity can be neglected (Rau et al. 2012).</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Peclet number for heat transport. Note when Peclet number &lt; 0.5 \</span>
+<span class="sd">    dispersivity can be neglected (Rau et al. 2012).</span>
 
 <span class="sd">    Args:</span>
 
@@ -196,13 +200,14 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        Ph = \frac{P_wC_w \cdot q \cdot L}{k_e}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="n">L</span><span class="p">)</span><span class="o">/</span><span class="n">ke</span></div>
 
 
 <div class="viewcode-block" id="hatch_alpha"><a class="viewcode-back" href="../../heat.html#heat.hydro_funcs.hatch_alpha">[docs]</a><span class="k">def</span> <span class="nf">hatch_alpha</span><span class="p">(</span><span class="n">vt</span><span class="p">,</span> <span class="n">ke</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al (2014) extinction depth model.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Alpha (a) term used in Hatch et al (2006) amplitude and Briggs et al \</span>
+<span class="sd">    (2014) extinction depth model.</span>
 
 <span class="sd">    Args:</span>
 
@@ -216,9 +221,8 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        a = \sqrt{v_t^4 + (8 \pi \cdot k_e/ T)^2}</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">vt</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ke</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.5</span></div>
-
 </pre></div>
 
           </div>

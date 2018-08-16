@@ -44,7 +44,7 @@
 
 
 <div class="viewcode-block" id="BP"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP">[docs]</a><span class="k">class</span> <span class="nc">BP</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initiates the Bredehoeft and Papaopulos (1965) solution model class</span>
 
 <span class="sd">    Args:</span>
@@ -55,7 +55,7 @@
 <span class="sd">    :param Tl: temperature at z = L (C)</span>
 <span class="sd">    :param PwCw: volumetric heat capacity of water (J/m3C)</span>
 <span class="sd">    :param k: thermal conductivity (W/m/C)</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">To</span><span class="p">,</span> <span class="n">Tl</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">=</span> <span class="n">PwCw</span>
@@ -66,8 +66,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
 
 <div class="viewcode-block" id="BP.equation"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.equation">[docs]</a>    <span class="k">def</span> <span class="nf">equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Bredehoeft and Papaopulos (1965) solution for one dimensional steady \</span>
+<span class="sd">        state heat transport.</span>
 
 <span class="sd">        Args:</span>
 
@@ -95,40 +96,44 @@
 <span class="sd">               Ph = \frac{PwCwqzwL}{k}</span>
 
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">Ph</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
-        <span class="n">t_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Ph</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
+        <span class="n">t_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">t_z</span></div>
 
 <div class="viewcode-block" id="BP.objective"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.objective">[docs]</a>    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        An objective function which calculates the absolute error between a modelled and observed profile for a flux \</span>
-<span class="sd">        estimate.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An objective function which calculates the absolute error between a \</span>
+<span class="sd">        modelled and observed profile for a flux estimate.</span>
 
 <span class="sd">        Args:</span>
 
 <span class="sd">        :param T: temperature at z (C)</span>
 <span class="sd">        :return: absolute error between modelled T(z) and observed T at z.</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="BP.optimise"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.optimise">[docs]</a>    <span class="k">def</span> <span class="nf">optimise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        When q is unknown this function will estimate optimal q value for a given profile.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        When q is unknown this function will estimate optimal q value for a \</span>
+<span class="sd">        given profile.</span>
 
 <span class="sd">        Args:</span>
 
 <span class="sd">        :param T: temperature at z (C)</span>
 <span class="sd">        :return: an estimate of q</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
-                                   <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="BP.solution"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.solution">[docs]</a>    <span class="k">def</span> <span class="nf">solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solve analytically for q at z = 0.5 L.</span>
 
 <span class="sd">        Args:</span>
@@ -154,15 +159,15 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">+</span> <span class="n">T</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="TurcotteSchubert"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.TurcotteSchubert">[docs]</a><span class="k">class</span> <span class="nc">TurcotteSchubert</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling\</span>
-<span class="sd">    it is unclear what direction q is positive in.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Turcotte Schubert steady state one dimensional heat transport \</span>
+<span class="sd">    equation. This is only suitable for upwelling it is unclear what \</span>
+<span class="sd">    direction q is positive in.</span>
 
 <span class="sd">    Args:</span>
 
@@ -172,7 +177,7 @@
 <span class="sd">    :param k: The thermal conductivity (W/m/C)</span>
 <span class="sd">    :param z: The depth (m)</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tl</span><span class="p">,</span> <span class="n">To</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">=</span> <span class="n">Tl</span>
@@ -182,7 +187,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
 
 <div class="viewcode-block" id="TurcotteSchubert.tz"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.TurcotteSchubert.tz">[docs]</a>    <span class="k">def</span> <span class="nf">tz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the temperature at an arbitrary depth.</span>
 
 <span class="sd">        Args:</span>
@@ -195,8 +200,9 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            T_z = (T_o - T_l) \cdot e^{\frac{- q \cdot \rho _w c_w \cdot z}{k}} + T_l</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> \
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span></div>
 
 <div class="viewcode-block" id="TurcotteSchubert.q"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.TurcotteSchubert.q">[docs]</a>    <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tz</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
