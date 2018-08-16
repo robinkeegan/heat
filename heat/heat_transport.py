@@ -5,7 +5,7 @@ import pandas as pd
 
 
 class BP:
-    '''
+    r"""
     Initiates the Bredehoeft and Papaopulos (1965) solution model class
 
     Args:
@@ -16,7 +16,7 @@ class BP:
     :param Tl: temperature at z = L (C)
     :param PwCw: volumetric heat capacity of water (J/m3C)
     :param k: thermal conductivity (W/m/C)
-    '''
+    """
 
     def __init__(self, PwCw, L, k, To, Tl, z):
         self.PwCw = PwCw
@@ -27,8 +27,9 @@ class BP:
         self.z = z
 
     def equation(self, q):
-        r'''
-        Bredehoeft and Papaopulos (1965) solution for one dimensional steady state heat transport.
+        r"""
+        Bredehoeft and Papaopulos (1965) solution for one dimensional steady \
+        state heat transport.
 
         Args:
 
@@ -56,40 +57,44 @@ class BP:
                Ph = \frac{PwCwqzwL}{k}
 
 
-        '''
-        Ph = (self.PwCw * q * self.L) / self.k
-        t_z = self.To + (self.Tl - self.To)*((np.exp(Ph * self.z / self.L) - 1)/(np.exp(Ph)-1))
+        """
+        Ph = -(self.PwCw * q * self.L) / self.k
+        t_z = self.To + (self.Tl - self.To) * \
+            ((np.exp(Ph * self.z / self.L) - 1) / (np.exp(Ph)-1))
         return t_z
 
     def objective(self, q, T):
-        '''
-        An objective function which calculates the absolute error between a modelled and observed profile for a flux \
-        estimate.
+        """
+        An objective function which calculates the absolute error between a \
+        modelled and observed profile for a flux estimate.
 
         Args:
 
         :param T: temperature at z (C)
         :return: absolute error between modelled T(z) and observed T at z.
 
-        '''
+        """
         return (np.abs(self.equation(q) - T)).sum()
 
     def optimise(self, T):
-        '''
-        When q is unknown this function will estimate optimal q value for a given profile.
+        """
+        When q is unknown this function will estimate optimal q value for a \
+        given profile.
 
         Args:
 
         :param T: temperature at z (C)
         :return: an estimate of q
 
-        '''
-        result = optimize.minimize(self.objective, (0.00001), (T), tol=1e-50, method="Nelder-Mead",
-                                   options={'maxiter': 1000})
+        """
+        result = optimize.minimize(
+            self.objective, (0.00001), (T), tol=1e-50, method="Nelder-Mead",
+            options={'maxiter': 1000}
+        )
         return result
 
     def solution(self, T):
-        r'''
+        r"""
         Solve analytically for q at z = 0.5 L.
 
         Args:
@@ -115,15 +120,15 @@ class BP:
         .. math::
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
 
-        '''
-
+        """
         return self.k * np.log((self.Tl ** 2 - 2.0 * self.Tl * self.Tz + self.Tz ** 2) / (self.To ** 2 - 2.0 * self.To * self.Tz + T ** 2)) / (self.L * self.PwCw)
 
 
 class TurcotteSchubert:
-    '''
-    The Turcotte Schubert steady state one dimensional heat transport equation. This is only suitable for upwelling\
-    it is unclear what direction q is positive in.
+    r"""
+    The Turcotte Schubert steady state one dimensional heat transport \
+    equation. This is only suitable for upwelling it is unclear what \
+    direction q is positive in.
 
     Args:
 
@@ -133,7 +138,7 @@ class TurcotteSchubert:
     :param k: The thermal conductivity (W/m/C)
     :param z: The depth (m)
 
-    '''
+    """
 
     def __init__(self, Tl, To, PwCw, k, z):
         self.Tl = Tl
@@ -143,7 +148,7 @@ class TurcotteSchubert:
         self.z = z
 
     def tz(self, q):
-        r'''
+        r"""
         Calculate the temperature at an arbitrary depth.
 
         Args:
@@ -156,8 +161,9 @@ class TurcotteSchubert:
         .. math::
             T_z = (T_o - T_l) \cdot e^{\frac{- q \cdot \rho _w c_w \cdot z}{k}} + T_l
 
-        '''
-        return (self.To - self.Tl) * np.exp(-q * self.PwCw / self.k * self.z) + self.Tl
+        """
+        return (self.To - self.Tl) * np.exp(-q * self.PwCw / self.k * self.z) \
+            + self.Tl
 
     def q(self, Tz):
         r'''
