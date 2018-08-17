@@ -45,8 +45,9 @@
 
 
 <div class="viewcode-block" id="amplitude"><a class="viewcode-back" href="../../heat.html#heat.signal.amplitude">[docs]</a><span class="k">def</span> <span class="nf">amplitude</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nout</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Extract the amplitude amplitude from a time-series using the lombscargle method.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the amplitude amplitude from a time-series using the lombscargle \</span>
+<span class="sd">    method.</span>
 
 <span class="sd">    Args:</span>
 
@@ -56,7 +57,8 @@
 <span class="sd">    :param tol: how far above and below the period to compute the periodigram default = 0.5 * period</span>
 <span class="sd">    :param nout: number of periods to output</span>
 <span class="sd">    :returns: Periods, the associated amplitudes for each period, the index of the max amplitude and the max amplitude.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">detrend</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">tolerance</span> <span class="o">=</span> <span class="n">period</span> <span class="o">*</span> <span class="n">tol</span>
     <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">period</span> <span class="o">-</span> <span class="n">tolerance</span><span class="p">,</span> <span class="n">period</span> <span class="o">+</span> <span class="n">tolerance</span><span class="p">,</span> <span class="n">nout</span><span class="p">)</span>
@@ -69,14 +71,14 @@
 
 
 <div class="viewcode-block" id="get_amp"><a class="viewcode-back" href="../../heat.html#heat.signal.get_amp">[docs]</a><span class="k">def</span> <span class="nf">get_amp</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applys the amplitude function to get amean amplitude over a 7 day period.</span>
 
 <span class="sd">    Args:</span>
 
 <span class="sd">    :param array: array of an hourly time series</span>
 <span class="sd">    :returns: mean amplitude for each 7 day period</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">week</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span>
     <span class="n">nweeks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="n">week</span><span class="p">)</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nweeks</span><span class="p">)</span>
@@ -84,12 +86,14 @@
         <span class="n">bind</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">week</span>
         <span class="n">tind</span> <span class="o">=</span> <span class="n">bind</span> <span class="o">+</span> <span class="n">week</span>
         <span class="n">subset</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">bind</span><span class="p">:</span><span class="n">tind</span><span class="p">]</span>
-        <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplitude</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)),</span> <span class="n">subset</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">amplitude</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)),</span> <span class="n">subset</span>
+        <span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="min_max_amplitude"><a class="viewcode-back" href="../../heat.html#heat.signal.min_max_amplitude">[docs]</a><span class="k">def</span> <span class="nf">min_max_amplitude</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="mi">24</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="min_max_amplitude"><a class="viewcode-back" href="../../heat.html#heat.signal.min_max_amplitude">[docs]</a><span class="k">def</span> <span class="nf">min_max_amplitude</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Min max peak picking amplitude method.</span>
 
 <span class="sd">    Args:</span>
@@ -98,7 +102,7 @@
 <span class="sd">    :param tau: the period of one oscillation as a length along the array</span>
 <span class="sd">    :returns: An array of amplitudes for each period.</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">))</span>
     <span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">tau</span>
     <span class="n">days</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">)</span> <span class="o">*</span> <span class="n">fs</span><span class="p">))</span>
@@ -111,28 +115,29 @@
     <span class="n">maxvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">reshaped</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">variation</span> <span class="o">=</span> <span class="n">maxvalue</span> <span class="o">-</span> <span class="n">minvalue</span>
     <span class="n">amplitude_</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">variation</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">tmid</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">amplitude_</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="n">minvalue</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">tmid</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">amplitude_</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fs</span><span class="p">,</span> <span class="n">minvalue</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">series</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">amplitude_</span></div>
 
 
 <div class="viewcode-block" id="phase_offset"><a class="viewcode-back" href="../../heat.html#heat.signal.phase_offset">[docs]</a><span class="k">def</span> <span class="nf">phase_offset</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Find the lag or offset between time-series y1 and y2 using cross-correlation.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the lag or offset between time-series y1 and y2 using \</span>
+<span class="sd">    cross-correlation.</span>
 
 <span class="sd">    Args:</span>
 
 <span class="sd">    :param y1: Time series 1</span>
 <span class="sd">    :param y2: Time series 2</span>
 <span class="sd">    :param period: The period of one oscillation default = 24</span>
-<span class="sd">    :return: the lag between time series 1 and 2, and the index of the max correlation.</span>
+<span class="sd">    :returns: the lag between time series 1 and 2, and the index of the max correlation.</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">correlation</span> <span class="o">=</span> <span class="n">ccf</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">correlation</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">period</span><span class="p">)])</span>
     <span class="k">return</span> <span class="n">correlation</span><span class="p">,</span> <span class="n">index</span></div>
-
 </pre></div>
 
           </div>

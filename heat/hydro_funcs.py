@@ -11,8 +11,7 @@ def pc_(ne, PwCw, PsCs):
     :param ne: effective porosity (unit-less)
     :param PwCw: volumetric heat capacity of water (J/m3C)
     :param PsCs: volumetric heat capacity of solid (J/m3C)
-    :return: pc the bulk volumetric heat capacity of the saturated medium \
-    (J/m3C)
+    :return: pc the bulk volumetric heat capacity of the saturated medium (J/m3C)
 
     This is computed using the equation:
 

@@ -64,7 +64,7 @@ class BP:
         return t_z
 
     def objective(self, q, T):
-        """
+        r"""
         An objective function which calculates the absolute error between a \
         modelled and observed profile for a flux estimate.
 
@@ -77,7 +77,7 @@ class BP:
         return (np.abs(self.equation(q) - T)).sum()
 
     def optimise(self, T):
-        """
+        r"""
         When q is unknown this function will estimate optimal q value for a \
         given profile.
 
@@ -166,7 +166,7 @@ class TurcotteSchubert:
             + self.Tl
 
     def q(self, Tz):
-        r'''
+        r"""
         Calculate the flux values.
 
         Args:
@@ -177,12 +177,12 @@ class TurcotteSchubert:
         .. math::
             \frac{-k}{\rho_w c_w \cdot z} \cdot \log{\Big(\frac{T_z-T_l}{T_o - T_l}\Big)}
 
-        '''
+        """
         return -self.k / (self.PwCw * self.z) * np.log((Tz - self.Tl) / (self.To - self.Tl))
 
 
 class Stallman:
-    '''
+    r"""
     The Stallman model class
 
     Args:
@@ -196,7 +196,7 @@ class Stallman:
     :param t: Time/s for evaluation can be a value or a numpy array (s)
     :return: an instance of the Stallman class
 
-    '''
+    """
 
     def __init__(self, PwCw, tau, K, ne, pc, z, t):
         self.PwCw = PwCw
@@ -208,7 +208,7 @@ class Stallman:
         self.t = t
 
     def constants(self, q):
-        r'''
+        r"""
         Stallman Constants for the Stallman (1965) Heat Transport equation
 
         Args:
@@ -227,7 +227,8 @@ class Stallman:
         .. math::
             D = \frac{-q \cdot C_wP_w}{2 \cdot k}
 
-        and A and B are constants calculated from C & D via the following equations:
+        and A and B are constants calculated from C & D via the following \
+        equations:
 
         .. math::
             a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D
@@ -235,7 +236,7 @@ class Stallman:
         .. math::
             b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}
 
-        '''
+        """
         c = (np.pi * self.pc) / (self.k * self.tau)
         d = (q * self.PwCw) / (2 * self.k)
         a = ((c ** 2 + ((d ** 4) / 4)) ** 0.5 + ((d ** 2) / 2)) ** 0.5 - d
@@ -243,7 +244,7 @@ class Stallman:
         return a, b
 
     def equation(self, a, b):
-        r'''
+        r"""
         The Stallman (1965) heat transport equation arranged for amplitude ratio
 
         Args:
@@ -257,12 +258,13 @@ class Stallman:
         .. math::
             Ar = e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)
 
-        '''
+        """
         return np.exp(-a * self.z) * np.sin(((2 * np.pi * self.t) / self.tau) - b * self.z)
 
     def objective(self, q, Ar):
-        '''
-        Objective function to calculate absolute error between observed and modelled amplitude ratio
+        """
+        Objective function to calculate absolute error between observed and\
+         modelled amplitude ratio
 
         Args:
 
@@ -270,30 +272,34 @@ class Stallman:
         :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: The absolute error between modelled and observed dTz
 
-        '''
+        """
         a, b = self.constants(q)
         evaluation = self.equation(a, b)
         ae = (np.abs(Ar - evaluation)).sum()
         return ae
 
     def optimise(self, Ar):
-        '''
-        Optimisation function to calculate the flux which minimises the result of the objective function.
+        """
+        Optimisation function to calculate the flux which minimises the result\
+         of the objective function.
 
         Args:
 
         :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: An estimate of the optimal flux (m/s positive downwards)
 
-        '''
-        result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
-                                   options={'maxiter': 1000})
+        """
+        result = optimize.minimize(
+            self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
+            options={'maxiter': 1000}
+        )
         return result
 
 
 def briggs_extinction_depth(K, Am, Ao, a, vt):
-    r'''
-    Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.
+    r"""
+    Brigg et al. (2014) method to calculate amplitude extinction depth for a \
+    sensor of finite precision.
 
     Args:
 
@@ -309,14 +315,14 @@ def briggs_extinction_depth(K, Am, Ao, a, vt):
     .. math::
         Z_e = 2 \cdot K_e (\frac{\ln(A_{min}/A_{z=0})}{v_t - \sqrt{a + v_t^2 / 2}})
 
-    '''
+    """
 
     return 2 * K * (np.log(Am/Ao)) / (vt - (a + (vt**2 / 2))**0.5)
 
 
 class NumericalTransport:
-    '''
-    Numerical model class
+    """
+    Numerical model class.
 
     Args:
 
@@ -327,7 +333,7 @@ class NumericalTransport:
     :param Ke: The effective thermal conductivity (W/m C)
     :return: An instance of the NumericalTransport class.
 
-    '''
+    """
 
     def __init__(self, z, dt, PwCw, pc, Ke):
         self.z = z
@@ -337,19 +343,19 @@ class NumericalTransport:
         self.Ke = Ke
 
     def max_timestep(self):
-        r'''
+        r"""
         The maximum stable time step calculated with the equation:
 
         .. math::
             \Delta T \leq \frac{z^2}{2 \cdot K_e}
 
         :return: The maximum time step (s)
-        '''
+        """
         return self.z ** 2 / (2 * self.Ke)
 
     def equation(self, q, T):
-        r'''
-        Governing heat transport equation:
+        r"""
+        Governing heat transport equation.
 
         Args:
 
@@ -361,12 +367,13 @@ class NumericalTransport:
         .. math::
             T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n
 
-        '''
+        """
         return self.dt * self.Ke * (T[2:] - 2 * T[1:-1] + T[0:-2]) / self.z ** 2 - self.dt * (q * self.PwCw) / self.pc * (T[2:] - T[0:-2]) / 2 * self.z + T[1:-1]
 
     def model(self, q, T, n_iterations, top_bc, bot_bc):
-        '''
-        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
+        """
+        Runs a finite difference model based on initial conditions and \
+        boundary conditions and returns the final \
         profile and the profile at all timesteps.
 
         Args:
@@ -376,11 +383,9 @@ class NumericalTransport:
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
-        :return: A list containing the final temperature depth profile as item zero and a dataframe of the temperature \
-        profiles at each time step as the second element. If the iterations are to many it may be better to use the \
-        method "model2" which only returns the temperature profile at the final time step.
+        :returns: A list containing the final temperature depth profile as item zero and a dataframe of the temperature profiles at each time step as the second element. If the iterations are to many it may be better to use the method "model2" which only returns the temperature profile at the final time step.
 
-        '''
+        """
         T_t = []
         for i in range(n_iterations):
             T[0] = top_bc[i]
@@ -394,8 +399,9 @@ class NumericalTransport:
         return T, df_
 
     def objective(self, q, T, n_iterations, top_bc, bot_bc, observed):
-        '''
-        Objective method returns the error between an observed and measured 2d array (including boundary conditions).
+        r"""
+        Objective method returns the error between an observed and measured \
+        2d array (including boundary conditions).
 
         Args:
 
@@ -407,15 +413,16 @@ class NumericalTransport:
         :param observed: A 2d observed array for all time steps (including the boundary conditions).
         :returns: The absolute error between the observed and modelled profiles
 
-        '''
+        """
         evaluation = self.model(q, T, n_iterations, top_bc, bot_bc)
         ae = (np.abs(evaluation[1].values - observed)).sum()
         return ae
 
     def optimise(self, T, n_iterations, top_bc, bot_bc, observed):
-        '''
-        Optimisation method returns an optimal estimaate of q. Note for big models it may be necessary to change the \
-        "maxiter" option in the "optimise.minimise" function.
+        r"""
+        Optimisation method returns an optimal estimaate of q. Note for big \
+        models it may be necessary to change the "maxiter" option in the \
+        "optimise.minimise" function.
 
         Args:
 
@@ -426,26 +433,30 @@ class NumericalTransport:
         :param observed: A 2d observed array for all time steps (including the boundary conditions).
         :returns: An estimate of the groundwater flux.
 
-        '''
-        result = optimize.minimize(self.objective, (0.00001), (T, n_iterations, top_bc, bot_bc, observed),
-                                   tol=1e-50, method="Nelder-Mead", options={'maxiter': 1000})
+        """
+        result = optimize.minimize(
+            self.objective, (0.00001),
+            (T, n_iterations, top_bc, bot_bc, observed),
+            tol=1e-50, method="Nelder-Mead", options={'maxiter': 1000}
+        )
         return result
 
     def model2(self, q, T, n_iterations, top_bc, bot_bc):
-        '''
-        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \
-        profile. This is faster and uses less ram.
+        r"""
+        Runs a finite difference model based on initial conditions and \
+        boundary conditions and returns the final profile. This is faster and \
+        uses less ram.
 
         Args:
 
         :param q: groundwater flux positive downwards (m/s)
-        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).
+        :param T: initial temperature depth profile starting with depth 0 asthe zeroth element of the array (C).
         :param n_iterations: The number of iterations to run the model (integer)
         :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)
         :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)
         :return: The final temperature depth profile.
 
-        '''
+        """
         for i in range(n_iterations):
             T[0] = top_bc[i]
             T[-1] = bot_bc[i]
@@ -454,7 +465,7 @@ class NumericalTransport:
 
 
 class HatchAmplitude:
-    '''
+    r"""
     The Hatch amplitude ratio method.
 
     Args:
@@ -467,7 +478,7 @@ class HatchAmplitude:
     :param tau: the period of oscillation (s)
     :return: an instance of the Hatch amplitude class
 
-    '''
+    """
 
     def __init__(self, pc, PwCw, Ke, dz, ne, tau):
         self.PwCw = PwCw
@@ -479,8 +490,9 @@ class HatchAmplitude:
         self.tau = tau
 
     def equation(self, q):
-        r'''
-        The Hatch amplitude method calculating amplitude as a function of depth and flux:
+        r"""
+        The Hatch amplitude method calculating amplitude as a function of \
+        depth and flux.
 
         Args:
 
@@ -490,7 +502,7 @@ class HatchAmplitude:
         .. math::
             A_r = exp \Bigg( \frac{\Delta z}{2 \dot K_e} \Big( v - \sqrt{\frac{a + v^2}{2}} \Big) \Bigg)
 
-        '''
+        """
         vs = vs_(q, self.ne)
         vt = vt_(self.PwCw, vs, self.ne, self.pc)
         a = hatch_alpha(vt, self.Ke, self.tau)
@@ -498,8 +510,9 @@ class HatchAmplitude:
         return Ar
 
     def objective(self, q, Ar):
-        '''
-        Objective function to find the absolute error between calculated and observed amplitudes.
+        r"""
+        Objective function to find the absolute error between calculated and \
+        observed amplitudes.
 
         Args:
 
@@ -507,12 +520,13 @@ class HatchAmplitude:
         :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: the absolute error between the modelled and observed amplitudes
 
-        '''
+        """
         return np.abs(self.equation(q) - Ar)
 
     def optimise(self, Ar):
-        '''
-        Optimisation function to return the q value which minimises the difference between the observed and calculated \
+        r"""
+        Optimisation function to return the q value which minimises the \
+        difference between the observed and calculated \
         amplitudes.
 
         Args:
@@ -520,7 +534,9 @@ class HatchAmplitude:
         :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor
         :return: The optimal q value
 
-        '''
-        result = optimize.minimize(self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
-                                   options={'maxiter': 1000})
+        """
+        result = optimize.minimize(
+            self.objective, (0.00001), (Ar), tol=1e-50, method="Nelder-Mead",
+            options={'maxiter': 1000}
+        )
         return result

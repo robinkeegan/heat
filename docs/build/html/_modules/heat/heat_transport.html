@@ -97,13 +97,13 @@
 
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Ph</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
+        <span class="n">Ph</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">*</span> <span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
         <span class="n">t_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span><span class="p">)</span> <span class="o">*</span> \
             <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Ph</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">t_z</span></div>
 
 <div class="viewcode-block" id="BP.objective"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.objective">[docs]</a>    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An objective function which calculates the absolute error between a \</span>
 <span class="sd">        modelled and observed profile for a flux estimate.</span>
 
@@ -116,7 +116,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="n">T</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="BP.optimise"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.BP.optimise">[docs]</a>    <span class="k">def</span> <span class="nf">optimise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        When q is unknown this function will estimate optimal q value for a \</span>
 <span class="sd">        given profile.</span>
 
@@ -138,7 +138,7 @@
 
 <span class="sd">        Args:</span>
 
-<span class="sd">        :param T: temperature at z (C)</span>
+<span class="sd">        :param T: temperature at z = 0.5L (C)</span>
 <span class="sd">        :return: q at z = 0.5 L</span>
 
 <span class="sd">        This is computed with:</span>
@@ -160,7 +160,7 @@
 <span class="sd">            q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tz</span> <span class="o">+</span> <span class="n">T</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span> <span class="o">*</span> <span class="n">T</span> <span class="o">+</span> <span class="n">T</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">*</span> <span class="n">T</span> <span class="o">+</span> <span class="n">T</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="TurcotteSchubert"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.TurcotteSchubert">[docs]</a><span class="k">class</span> <span class="nc">TurcotteSchubert</span><span class="p">:</span>
@@ -205,7 +205,7 @@
             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span></div>
 
 <div class="viewcode-block" id="TurcotteSchubert.q"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.TurcotteSchubert.q">[docs]</a>    <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tz</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the flux values.</span>
 
 <span class="sd">        Args:</span>
@@ -216,12 +216,12 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            \frac{-k}{\rho_w c_w \cdot z} \cdot \log{\Big(\frac{T_z-T_l}{T_o - T_l}\Big)}</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">Tz</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">To</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Tl</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="Stallman"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.Stallman">[docs]</a><span class="k">class</span> <span class="nc">Stallman</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Stallman model class</span>
 
 <span class="sd">    Args:</span>
@@ -235,7 +235,7 @@
 <span class="sd">    :param t: Time/s for evaluation can be a value or a numpy array (s)</span>
 <span class="sd">    :return: an instance of the Stallman class</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">=</span> <span class="n">PwCw</span>
@@ -247,7 +247,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span>
 
 <div class="viewcode-block" id="Stallman.constants"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.Stallman.constants">[docs]</a>    <span class="k">def</span> <span class="nf">constants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stallman Constants for the Stallman (1965) Heat Transport equation</span>
 
 <span class="sd">        Args:</span>
@@ -266,7 +266,8 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            D = \frac{-q \cdot C_wP_w}{2 \cdot k}</span>
 
-<span class="sd">        and A and B are constants calculated from C &amp; D via the following equations:</span>
+<span class="sd">        and A and B are constants calculated from C &amp; D via the following \</span>
+<span class="sd">        equations:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            a = ((C^2 + \frac{D^4}{4})^{1/2} + \frac{D^2}{2}) ^{1/2} - D</span>
@@ -274,7 +275,7 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            b = ((C^2 + \frac{D^4}{4})^{1/2} - \frac{D^2}{2}) ^{1/2}</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="p">((</span><span class="n">c</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="n">d</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="p">((</span><span class="n">d</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">d</span>
@@ -282,7 +283,7 @@
         <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span></div>
 
 <div class="viewcode-block" id="Stallman.equation"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.Stallman.equation">[docs]</a>    <span class="k">def</span> <span class="nf">equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The Stallman (1965) heat transport equation arranged for amplitude ratio</span>
 
 <span class="sd">        Args:</span>
@@ -296,12 +297,13 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            Ar = e^{-a \cdot z} sin(\frac{2 \cdot \pi \cdot t}{T} - b \cdot z)</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stallman.objective"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.Stallman.objective">[docs]</a>    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">Ar</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Objective function to calculate absolute error between observed and modelled amplitude ratio</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objective function to calculate absolute error between observed and\</span>
+<span class="sd">         modelled amplitude ratio</span>
 
 <span class="sd">        Args:</span>
 
@@ -309,30 +311,34 @@
 <span class="sd">        :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</span>
 <span class="sd">        :return: The absolute error between modelled and observed dTz</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">constants</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
         <span class="n">evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
         <span class="n">ae</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ar</span> <span class="o">-</span> <span class="n">evaluation</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ae</span></div>
 
 <div class="viewcode-block" id="Stallman.optimise"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.Stallman.optimise">[docs]</a>    <span class="k">def</span> <span class="nf">optimise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ar</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Optimisation function to calculate the flux which minimises the result of the objective function.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimisation function to calculate the flux which minimises the result\</span>
+<span class="sd">         of the objective function.</span>
 
 <span class="sd">        Args:</span>
 
 <span class="sd">        :param Ar: The observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</span>
 <span class="sd">        :return: An estimate of the optimal flux (m/s positive downwards)</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">Ar</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
-                                   <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">Ar</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div></div>
 
 
 <div class="viewcode-block" id="briggs_extinction_depth"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.briggs_extinction_depth">[docs]</a><span class="k">def</span> <span class="nf">briggs_extinction_depth</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">Am</span><span class="p">,</span> <span class="n">Ao</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">vt</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Brigg et al. (2014) method to calculate amplitude extinction depth for a sensor of finite precision.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Brigg et al. (2014) method to calculate amplitude extinction depth for a \</span>
+<span class="sd">    sensor of finite precision.</span>
 
 <span class="sd">    Args:</span>
 
@@ -348,14 +354,14 @@
 <span class="sd">    .. math::</span>
 <span class="sd">        Z_e = 2 \cdot K_e (\frac{\ln(A_{min}/A_{z=0})}{v_t - \sqrt{a + v_t^2 / 2}})</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">K</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Am</span><span class="o">/</span><span class="n">Ao</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">vt</span> <span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="n">vt</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="NumericalTransport"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport">[docs]</a><span class="k">class</span> <span class="nc">NumericalTransport</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Numerical model class</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Numerical model class.</span>
 
 <span class="sd">    Args:</span>
 
@@ -366,7 +372,7 @@
 <span class="sd">    :param Ke: The effective thermal conductivity (W/m C)</span>
 <span class="sd">    :return: An instance of the NumericalTransport class.</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">Ke</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
@@ -376,19 +382,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Ke</span> <span class="o">=</span> <span class="n">Ke</span>
 
 <div class="viewcode-block" id="NumericalTransport.max_timestep"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.max_timestep">[docs]</a>    <span class="k">def</span> <span class="nf">max_timestep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The maximum stable time step calculated with the equation:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            \Delta T \leq \frac{z^2}{2 \cdot K_e}</span>
 
 <span class="sd">        :return: The maximum time step (s)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ke</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="NumericalTransport.equation"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.equation">[docs]</a>    <span class="k">def</span> <span class="nf">equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Governing heat transport equation:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Governing heat transport equation.</span>
 
 <span class="sd">        Args:</span>
 
@@ -400,12 +406,13 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            T_j^{n + 1} = \Delta t \cdot K_e \cdot \frac{T_{j+1} ^n - 2T_j ^n + T_{j - 1} ^n}{z ^2} - \Delta t \cdot \frac{q \cdot \rho_w c_w}{pc} \cdot \frac{T_{j+1}^n - T_{j - 1} ^n}{2z} + T_j ^n</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ke</span> <span class="o">*</span> <span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span> <span class="o">*</span> <span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="NumericalTransport.model"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.model">[docs]</a>    <span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs a finite difference model based on initial conditions and \</span>
+<span class="sd">        boundary conditions and returns the final \</span>
 <span class="sd">        profile and the profile at all timesteps.</span>
 
 <span class="sd">        Args:</span>
@@ -415,11 +422,9 @@
 <span class="sd">        :param n_iterations: The number of iterations to run the model (integer)</span>
 <span class="sd">        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</span>
 <span class="sd">        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</span>
-<span class="sd">        :return: A list containing the final temperature depth profile as item zero and a dataframe of the temperature \</span>
-<span class="sd">        profiles at each time step as the second element. If the iterations are to many it may be better to use the \</span>
-<span class="sd">        method &quot;model2&quot; which only returns the temperature profile at the final time step.</span>
+<span class="sd">        :returns: A list containing the final temperature depth profile as item zero and a dataframe of the temperature profiles at each time step as the second element. If the iterations are to many it may be better to use the method &quot;model2&quot; which only returns the temperature profile at the final time step.</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T_t</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
             <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_bc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -433,8 +438,9 @@
         <span class="k">return</span> <span class="n">T</span><span class="p">,</span> <span class="n">df_</span></div>
 
 <div class="viewcode-block" id="NumericalTransport.objective"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.objective">[docs]</a>    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">,</span> <span class="n">observed</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Objective method returns the error between an observed and measured 2d array (including boundary conditions).</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objective method returns the error between an observed and measured \</span>
+<span class="sd">        2d array (including boundary conditions).</span>
 
 <span class="sd">        Args:</span>
 
@@ -446,15 +452,16 @@
 <span class="sd">        :param observed: A 2d observed array for all time steps (including the boundary conditions).</span>
 <span class="sd">        :returns: The absolute error between the observed and modelled profiles</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">)</span>
         <span class="n">ae</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">observed</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">ae</span></div>
 
 <div class="viewcode-block" id="NumericalTransport.optimise"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.optimise">[docs]</a>    <span class="k">def</span> <span class="nf">optimise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">,</span> <span class="n">observed</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Optimisation method returns an optimal estimaate of q. Note for big models it may be necessary to change the \</span>
-<span class="sd">        &quot;maxiter&quot; option in the &quot;optimise.minimise&quot; function.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimisation method returns an optimal estimaate of q. Note for big \</span>
+<span class="sd">        models it may be necessary to change the &quot;maxiter&quot; option in the \</span>
+<span class="sd">        &quot;optimise.minimise&quot; function.</span>
 
 <span class="sd">        Args:</span>
 
@@ -465,26 +472,30 @@
 <span class="sd">        :param observed: A 2d observed array for all time steps (including the boundary conditions).</span>
 <span class="sd">        :returns: An estimate of the groundwater flux.</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">,</span> <span class="n">observed</span><span class="p">),</span>
-                                   <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">,</span> <span class="n">observed</span><span class="p">),</span>
+            <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="NumericalTransport.model2"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.NumericalTransport.model2">[docs]</a>    <span class="k">def</span> <span class="nf">model2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_iterations</span><span class="p">,</span> <span class="n">top_bc</span><span class="p">,</span> <span class="n">bot_bc</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Runs a finite difference model based on initial conditions and boundary conditions and returns the final \</span>
-<span class="sd">        profile. This is faster and uses less ram.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs a finite difference model based on initial conditions and \</span>
+<span class="sd">        boundary conditions and returns the final profile. This is faster and \</span>
+<span class="sd">        uses less ram.</span>
 
 <span class="sd">        Args:</span>
 
 <span class="sd">        :param q: groundwater flux positive downwards (m/s)</span>
-<span class="sd">        :param T: initial temperature depth profile starting with depth 0 as the zeroth element of the array (C).</span>
+<span class="sd">        :param T: initial temperature depth profile starting with depth 0 asthe zeroth element of the array (C).</span>
 <span class="sd">        :param n_iterations: The number of iterations to run the model (integer)</span>
 <span class="sd">        :param top_bc: An array of the temperature at the top boundary condition (C) must be of len(n_iterations)</span>
 <span class="sd">        :param bot_bc: An array of the temperature at the bottom boundary condition (C) must be of len(n_iterations)</span>
 <span class="sd">        :return: The final temperature depth profile.</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_iterations</span><span class="p">):</span>
             <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_bc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">T</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bot_bc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -493,7 +504,7 @@
 
 
 <div class="viewcode-block" id="HatchAmplitude"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.HatchAmplitude">[docs]</a><span class="k">class</span> <span class="nc">HatchAmplitude</span><span class="p">:</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Hatch amplitude ratio method.</span>
 
 <span class="sd">    Args:</span>
@@ -506,7 +517,7 @@
 <span class="sd">    :param tau: the period of oscillation (s)</span>
 <span class="sd">    :return: an instance of the Hatch amplitude class</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">PwCw</span><span class="p">,</span> <span class="n">Ke</span><span class="p">,</span> <span class="n">dz</span><span class="p">,</span> <span class="n">ne</span><span class="p">,</span> <span class="n">tau</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span> <span class="o">=</span> <span class="n">PwCw</span>
@@ -518,8 +529,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
 
 <div class="viewcode-block" id="HatchAmplitude.equation"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.HatchAmplitude.equation">[docs]</a>    <span class="k">def</span> <span class="nf">equation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The Hatch amplitude method calculating amplitude as a function of depth and flux:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Hatch amplitude method calculating amplitude as a function of \</span>
+<span class="sd">        depth and flux.</span>
 
 <span class="sd">        Args:</span>
 
@@ -529,7 +541,7 @@
 <span class="sd">        .. math::</span>
 <span class="sd">            A_r = exp \Bigg( \frac{\Delta z}{2 \dot K_e} \Big( v - \sqrt{\frac{a + v^2}{2}} \Big) \Bigg)</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vs</span> <span class="o">=</span> <span class="n">vs_</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">)</span>
         <span class="n">vt</span> <span class="o">=</span> <span class="n">vt_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PwCw</span><span class="p">,</span> <span class="n">vs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">hatch_alpha</span><span class="p">(</span><span class="n">vt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ke</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">)</span>
@@ -537,8 +549,9 @@
         <span class="k">return</span> <span class="n">Ar</span></div>
 
 <div class="viewcode-block" id="HatchAmplitude.objective"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.HatchAmplitude.objective">[docs]</a>    <span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">Ar</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Objective function to find the absolute error between calculated and observed amplitudes.</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objective function to find the absolute error between calculated and \</span>
+<span class="sd">        observed amplitudes.</span>
 
 <span class="sd">        Args:</span>
 
@@ -546,12 +559,13 @@
 <span class="sd">        :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</span>
 <span class="sd">        :return: the absolute error between the modelled and observed amplitudes</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">-</span> <span class="n">Ar</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="HatchAmplitude.optimise"><a class="viewcode-back" href="../../heat.html#heat.heat_transport.HatchAmplitude.optimise">[docs]</a>    <span class="k">def</span> <span class="nf">optimise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ar</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Optimisation function to return the q value which minimises the difference between the observed and calculated \</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Optimisation function to return the q value which minimises the \</span>
+<span class="sd">        difference between the observed and calculated \</span>
 <span class="sd">        amplitudes.</span>
 
 <span class="sd">        Args:</span>
@@ -559,9 +573,11 @@
 <span class="sd">        :param Ar: observed amplitude ratio (Ar = Ad / As) where Ad is deep sensor and As is shallow sensor</span>
 <span class="sd">        :return: The optimal q value</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">Ar</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
-                                   <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objective</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.00001</span><span class="p">),</span> <span class="p">(</span><span class="n">Ar</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Nelder-Mead&quot;</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxiter&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div></div>
 </pre></div>
 
