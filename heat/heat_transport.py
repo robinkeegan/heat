@@ -31,16 +31,6 @@ class BP:
         .. math::
                T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})
 
-        Where:
-
-        - z = depth (m)
-        - L = maximum depth (m)
-        - To = temperature at z = 0 (C)
-        - Tl = temperature at z = L (C)
-        - q = q in the z direction (m/s)
-        - PwCw = volumetric heat capacity of water (J/m3C)
-        - k = thermal conductivity (W/m/C)
-
         and:
 
         .. math::
@@ -65,22 +55,10 @@ class BP:
         :param z: array of depths (m)
         :param PwCw: volumetric heat capacity of water (J/m3C)
         :param k: thermal conductivity (W/m/C)
+        :param n: number of points to interpolate to (default = 100)
         :return: Temperature at z
 
         This is computed with:
-
-        When
-
-        .. math::
-            \frac{z}{L} = 0.5
-
-        and
-
-        .. math::
-            \frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} > 0
-
-
-        q can be solved with:
 
         .. math::
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
