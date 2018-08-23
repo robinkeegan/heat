@@ -1,39 +1,29 @@
 import numpy as np
 from scipy import optimize
+from scipy.interpolate import interp1d
 from heat.hydro_funcs import vt_, vs_, hatch_alpha
 import pandas as pd
 
 
 class BP:
     r"""
-    Initiates the Bredehoeft and Papaopulos (1965) solution model class
+    Initiates the Bredehoeft and Papaopulos (1965) solution model class.
 
-    Args:
-
-    :param z: depth (m)
-    :param L: maximum depth (m)
-    :param To: temperature at z = 0 (C)
-    :param Tl: temperature at z = L (C)
-    :param PwCw: volumetric heat capacity of water (J/m3C)
-    :param k: thermal conductivity (W/m/C)
     """
 
-    def __init__(self, PwCw, L, k, To, Tl, z):
-        self.PwCw = PwCw
-        self.L = L
-        self.k = k
-        self.To = To
-        self.Tl = Tl
-        self.z = z
-
-    def equation(self, q):
+    def equation(To, Tl, z, q, PwCw, k):
         r"""
         Bredehoeft and Papaopulos (1965) solution for one dimensional steady \
         state heat transport.
 
         Args:
 
+        :param To: temperature at z minimum (C)
+        :param Tl: temperature at z maximum (C)
+        :param z: array of depths (m)
         :param q: groundwater flux positive downwards (m/s)
+        :param PwCw: volumetric heat capacity of water (J/m3C)
+        :param k: thermal conductivity (W/m/C)
         :return: Temperature at z
 
         This is computed using the equation:
@@ -58,49 +48,24 @@ class BP:
 
 
         """
-        Ph = (self.PwCw * q * self.L) / self.k
-        t_z = self.To + (self.Tl - self.To) * \
-            ((np.exp(Ph * self.z / self.L) - 1) / (np.exp(Ph)-1))
+        z = z - z.min()
+        L = z.max() - z.min()
+        z = z[1:-1]
+        Ph = (PwCw * q * L) / k
+        t_z = To + (Tl - To) * ((np.exp(Ph * z / L) - 1) / (np.exp(Ph)-1))
         return t_z
 
-    def objective(self, q, T):
+    def solution(T, z, PwCw, k, n=100):
         r"""
-        An objective function which calculates the absolute error between a \
-        modelled and observed profile for a flux estimate.
+        Solve analytically for q between a moving boundary.
 
         Args:
 
-        :param T: temperature at z (C)
-        :return: absolute error between modelled T(z) and observed T at z.
-
-        """
-        return (np.abs(self.equation(q) - T)).sum()
-
-    def optimise(self, T):
-        r"""
-        When q is unknown this function will estimate optimal q value for a \
-        given profile.
-
-        Args:
-
-        :param T: temperature at z (C)
-        :return: an estimate of q
-
-        """
-        result = optimize.minimize(
-            self.objective, (0.00001), (T), tol=1e-50, method="Nelder-Mead",
-            options={'maxiter': 1000}
-        )
-        return result
-
-    def solution(self, T):
-        r"""
-        Solve analytically for q at z = 0.5 L.
-
-        Args:
-
-        :param T: temperature at z = 0.5L (C)
-        :return: q at z = 0.5 L
+        :param T: array of temperatures (C)
+        :param z: array of depths (m)
+        :param PwCw: volumetric heat capacity of water (J/m3C)
+        :param k: thermal conductivity (W/m/C)
+        :return: Temperature at z
 
         This is computed with:
 
@@ -121,7 +86,17 @@ class BP:
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
 
         """
-        return self.k * np.log((self.Tl ** 2 - 2.0 * self.Tl * T + T ** 2) / (self.To ** 2 - 2.0 * self.To * T + T ** 2)) / (self.L * self.PwCw)
+        func = interp1d(z, T)
+        z_new = np.linspace(z.min(), z.max(), n)
+        T_new = func(z_new)
+        L = (z.max() - z.min()) / n
+        To = T_new[0:-2]
+        Tz = T_new[1:-1]
+        Tl = T_new[2:]
+        q_estimates = k * np.log((Tl ** 2 - 2.0 * Tl * Tz + Tz ** 2) /
+                                 (To ** 2 - 2.0 * To * Tz + Tz ** 2)
+                                 ) / (L * PwCw)
+        return q_estimates.mean(), q_estimates
 
 
 class TurcotteSchubert:
