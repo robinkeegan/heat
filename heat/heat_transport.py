@@ -9,29 +9,35 @@ class BP:
     r"""
     Initiates the Bredehoeft and Papaopulos (1965) solution model class.
 
+    Args:
+
+    :param PwCw: volumetric heat capacity of water (J/m3C)
+    :param k: thermal conductivity (W/m/C)
     """
 
-    def equation(To, Tl, z, q, PwCw, k):
+    def __init__(self, PwCw, k):
+        self.PwCw = PwCw
+        self.k = k
+
+    def equation(self, q, To, Tl, z):
         r"""
         Bredehoeft and Papaopulos (1965) solution for one dimensional steady \
         state heat transport.
 
         Args:
 
+        :param q: groundwater flux positive downwards (m/s)
         :param To: temperature at z minimum (C)
         :param Tl: temperature at z maximum (C)
         :param z: array of depths (m)
-        :param q: groundwater flux positive downwards (m/s)
-        :param PwCw: volumetric heat capacity of water (J/m3C)
-        :param k: thermal conductivity (W/m/C)
-        :return: Temperature at z
+        :returns: temperature at depth/s z
 
         This is computed using the equation:
 
         .. math::
                T(z) = To+(Tl-To)(\frac{e^{Ph\frac{z}{L}}-1}{e^{Ph}-1})
 
-        and:
+        Where:
 
         .. math::
                Ph = \frac{PwCwqzwL}{k}
@@ -41,11 +47,49 @@ class BP:
         z = z - z.min()
         L = z.max() - z.min()
         z = z[1:-1]
-        Ph = (PwCw * q * L) / k
+        Ph = (self.PwCw * q * L) / self.k
         t_z = To + (Tl - To) * ((np.exp(Ph * z / L) - 1) / (np.exp(Ph)-1))
         return t_z
 
-    def solution(T, z, PwCw, k, n=100):
+    def objective(self, q, To, Tl, z, T):
+        r"""
+        An objective function which calculates the absolute error between a \
+        modelled and observed profile for a flux estimate.
+
+        Args:
+
+        :param q: groundwater flux positive downwards (m/s)
+        :param To: temperature at z minimum (C)
+        :param Tl: temperature at z maximum (C)
+        :param z: array of depths (m)
+        :param T: temperature at z (C)
+        :return: absolute error between modelled T(z) and observed T at z.
+
+        """
+        return (np.abs(self.equation(q, To, Tl, z) - T)).sum()
+
+    def optimise(self, To, Tl, z, T):
+        r"""
+        When q is unknown this function will estimate optimal q value for a \
+        given profile.
+
+        Args:
+
+        :param To: temperature at z minimum (C)
+        :param Tl: temperature at z maximum (C)
+        :param z: array of depths (m)
+        :param T: temperature at z (C)
+        :return: an estimate of q
+
+        """
+        result = optimize.minimize(
+            self.objective, (1e-10), (To, Tl, z, T),
+            tol=1e-10, method="Nelder-Mead",
+            options={'maxiter': 1000}
+        )
+        return result
+
+    def solution(self, T, z):
         r"""
         Solve analytically for q between a moving boundary.
 
@@ -55,7 +99,6 @@ class BP:
         :param z: array of depths (m)
         :param PwCw: volumetric heat capacity of water (J/m3C)
         :param k: thermal conductivity (W/m/C)
-        :param n: number of points to interpolate to (default = 100)
         :return: Temperature at z
 
         This is computed with:
@@ -64,6 +107,7 @@ class BP:
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
 
         """
+        n = len(T)
         func = interp1d(z, T)
         z_new = np.linspace(z.min(), z.max(), n)
         T_new = func(z_new)
@@ -71,10 +115,10 @@ class BP:
         To = T_new[0:-2]
         Tz = T_new[1:-1]
         Tl = T_new[2:]
-        q_estimates = k * np.log((Tl ** 2 - 2.0 * Tl * Tz + Tz ** 2) /
-                                 (To ** 2 - 2.0 * To * Tz + Tz ** 2)
-                                 ) / (L * PwCw)
-        return q_estimates.mean(), q_estimates
+        q_estimates = self.k * np.log((Tl ** 2 - 2.0 * Tl * Tz + Tz ** 2) /
+                                      (To ** 2 - 2.0 * To * Tz + Tz ** 2)
+                                      ) / (L * self.PwCw)
+        return q_estimates
 
 
 class TurcotteSchubert:
