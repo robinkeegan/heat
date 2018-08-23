@@ -1,7 +1,7 @@
 from setuptools import setup
 import setuptools
 setup(name='heat',
-      version='0.1',
+      version='0.2',
       description='1D Heat Transport Models',
       author='Robin Keegan-Treloar',
       author_email='robin_kt@outlook.com',
