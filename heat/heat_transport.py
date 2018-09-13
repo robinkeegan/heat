@@ -89,7 +89,7 @@ class BP:
         )
         return result
 
-    def solution(self, T, z):
+    def solution(self, T, z, n=3):
         r"""
         Solve analytically for q between a moving boundary.
 
@@ -107,12 +107,11 @@ class BP:
             q = \frac{k \log{\left (\frac{Tl^{2} - 2.0 Tl Tz + Tz^{2}}{To^{2} - 2.0 To Tz + Tz^{2}} \right )}}{L PwCw}
 
         """
-        n = len(T)
         func = interp1d(z, T)
         z_new = np.linspace(z.min(), z.max(), n)
         T_new = func(z_new)
-        L = (z.max() - z.min()) / n
-        To = T_new[0:-2]
+        L = (z_new[2:] - z.min())
+        To = T_new[0]
         Tz = T_new[1:-1]
         Tl = T_new[2:]
         q_estimates = self.k * np.log((Tl ** 2 - 2.0 * Tl * Tz + Tz ** 2) /
