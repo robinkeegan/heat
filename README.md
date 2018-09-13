@@ -10,13 +10,8 @@ Currently the collection includes:
 
 
 ## To install
-
 ```bash
 git clone https://github.com/robinkeegan/heat
 cd heat
 python setup.py install
 ```
-
-## Future Directions and Todo
-1. Implement a more robust amplitude extraction algorithm
-2. Add some tests
